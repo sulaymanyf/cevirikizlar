@@ -1,8 +1,9 @@
 server:
   port: 9000
 spring:
+
   application:
-    name: yeaile-irfan #指定服务名
+    name: cevirikizlar #指定服务名
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/cevirikizlar?characterEncoding=UTF8&serverTimezone=UTC
@@ -35,7 +36,6 @@ jwt:
     expiration: 3600000
 
 
-
 file:
   rootPath: E
   sonPath: /img/
@@ -62,7 +62,7 @@ secure:
   ignored:
     urls: #安全路径白名单
       - /swagger-ui.html
-#      - /api/admin/user/**
+#      - /api/admin/ceviri/**
       - /swagger-resources/**
       - /swagger/**
       - /**/v2/api-docs
@@ -75,3 +75,4 @@ secure:
       - /actuator/**
       - /sso/**
       - /home/**
+

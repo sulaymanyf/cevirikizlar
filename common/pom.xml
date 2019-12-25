@@ -6,7 +6,6 @@
         <groupId>com.yeaile</groupId>
         <artifactId>cevirikizlar</artifactId>
         <version>0.0.1-SNAPSHOT</version>
-        <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.yeaile</groupId>
     <artifactId>common</artifactId>
@@ -26,13 +25,5 @@
         </dependency>
     </dependencies>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
 
 </project>

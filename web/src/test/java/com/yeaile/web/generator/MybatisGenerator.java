@@ -185,7 +185,7 @@ public class MybatisGenerator {
         }
 
         if (this.isCreateController) {
-            controllerFileConfig = new CustomFileOutConfig("/mybatis/templates/controller.java.vm", this.controllerPackage, this.controllerPackageName, this.controllerFileName, this.controllerOutputDir, "user", this.isDeleteFilePrefixModule, this.injectionConfig, this.packageConfig);
+            controllerFileConfig = new CustomFileOutConfig("/mybatis/templates/controller.java.vm", this.controllerPackage, this.controllerPackageName, this.controllerFileName, this.controllerOutputDir, "ceviri", this.isDeleteFilePrefixModule, this.injectionConfig, this.packageConfig);
             controllerFileConfig.setSuperClass(this.controllerSuperClass);
             controllerFileConfig.setIgnoreTablePrefix(this.ignoreTablePrefix);
             this.fileOutConfigs.add(controllerFileConfig);
@@ -262,7 +262,7 @@ public class MybatisGenerator {
                 this.controllerSuperClass = StringUtils.trimToNull(properties.getProperty("controllerSuperClass"));
                 this.controllerFileName = (String)StringUtils.defaultIfEmpty(StringUtils.trimToNull(properties.getProperty("controllerFileName")), "%sController.java");
                 this.controllerOutputDir = this.projectRootPath + (String)StringUtils.defaultIfEmpty(StringUtils.trimToNull(properties.getProperty("controllerOutputDir")), this.baseOutputDir);
-                this.controllerPackageName = (String)StringUtils.defaultIfEmpty(StringUtils.trimToNull(properties.getProperty("controllerPackageName")), "user");
+                this.controllerPackageName = (String)StringUtils.defaultIfEmpty(StringUtils.trimToNull(properties.getProperty("controllerPackageName")), "ceviri");
                 this.daoPackage = (String)StringUtils.defaultIfEmpty(StringUtils.trimToNull(properties.getProperty("daoPackage")), this.basePackage);
                 this.daoSuperClass = (String)StringUtils.defaultIfBlank(StringUtils.trimToNull(properties.getProperty("daoSuperClass")), "com.baomidou.mybatisplus.core.mapper.BaseMapper");
                 this.daoFileName = (String)StringUtils.defaultIfEmpty(StringUtils.trimToNull(properties.getProperty("daoFileName")), "%sMapper.java");

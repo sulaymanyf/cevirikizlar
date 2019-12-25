@@ -19,6 +19,5 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserRoleServiceImpl implements IUserRoleService {
 
-    @Autowired
-    private UserRoleMapper userRoleMapper ;
+
 }

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yeaile.user.mapper.PermissionMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yeaile.user.entity.Permission">
+        <id column="id" property="id" />
+        <result column="description" property="description" />
+        <result column="per_name" property="perName" />
+        <result column="type" property="type" />
+        <result column="pid" property="pid" />
+        <result column="level" property="level" />
+        <result column="method" property="method" />
+        <result column="url" property="url" />
+        <result column="icon" property="icon" />
+        <result column="sort" property="sort" />
+        <result column="status" property="status" />
+        <result column="code" property="code" />
+        <result column="update_time" property="updateTime" />
+        <result column="create_time" property="createTime" />
+        <result column="delete_flag" property="deleteFlag" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+ id, 
+ description, 
+ per_name, 
+ type, 
+ pid, 
+ level, 
+ method, 
+ url, 
+ icon, 
+ sort, 
+ status, 
+ code, 
+ update_time, 
+ create_time, 
+ delete_flag
+
+    </sql>
+</mapper>

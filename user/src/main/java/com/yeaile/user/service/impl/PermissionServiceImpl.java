@@ -19,6 +19,5 @@ import org.springframework.stereotype.Service;
 @Service
 public class PermissionServiceImpl implements IPermissionService {
 
-    @Autowired
-    private PermissionMapper permissionMapper ;
+
 }
