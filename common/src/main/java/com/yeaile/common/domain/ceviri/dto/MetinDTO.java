@@ -58,7 +58,7 @@ private static final long serialVersionUID = 1L;
 	/**
 	 * 审核状态
 	 */
-    private String state;
+    private Integer state;
 
 	/**
 	 * URL

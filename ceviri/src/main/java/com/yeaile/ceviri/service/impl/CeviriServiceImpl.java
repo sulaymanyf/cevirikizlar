@@ -1,10 +1,13 @@
 package com.yeaile.ceviri.service.impl;
 
+import com.yeaile.ceviri.entity.Ceviri;
 import com.yeaile.ceviri.mapper.CeviriMapper;
 import com.yeaile.ceviri.service.ICeviriService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.yeaile.common.domain.ceviri.vo.CeviriVO;
+import com.yeaile.common.utils.BeanUtil;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 
 
 /**
@@ -18,6 +21,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class CeviriServiceImpl implements ICeviriService {
 
-    @Autowired
+    @Resource
     private CeviriMapper ceviriMapper ;
+
+    @Override
+    public CeviriVO cevir(String id) {
+
+        Ceviri ceviri = ceviriMapper.selectById(id);
+        CeviriVO ceviriVO = BeanUtil.copy(ceviri, CeviriVO.class);
+        return ceviriVO;
+    }
 }

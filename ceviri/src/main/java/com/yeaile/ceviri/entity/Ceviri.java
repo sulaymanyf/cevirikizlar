@@ -53,7 +53,7 @@ private static final long serialVersionUID=1L;
          * 审核状态
          */
         @TableField("state")
-            private String state;
+            private Integer state;
 
         /**
          * URL

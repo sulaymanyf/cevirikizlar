@@ -15,7 +15,7 @@ import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-import sun.plugin.util.UserProfile;
+
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
@@ -36,7 +36,7 @@ import java.io.ByteArrayOutputStream;
  */
 
 @RestController
-@RequestMapping("/api/user/")
+@RequestMapping("/api/ceviri-kizlar/user/")
 @Api(description = "用户")
 public class UserController {
 
@@ -80,8 +80,8 @@ public class UserController {
 
     @RequestMapping(value = "/v1/info", method = RequestMethod.GET)
     public Result getInfo() {
-        UserProfile profile = new UserProfile();
-        return new Result(true, StatusCode.OK, profile);
+
+        return new Result(true, StatusCode.OK, "");
     }
 
     /**

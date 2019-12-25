@@ -2,8 +2,14 @@ package com.yeaile.web.module.ceviri;
 
 
 import com.yeaile.ceviri.service.IMetinTypeService;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.yeaile.common.domain.ceviri.dto.MetinDTO;
+import com.yeaile.common.domain.ceviri.dto.MetinTypeDTO;
+import com.yeaile.common.domain.ceviri.vo.MetinTypeVO;
+import com.yeaile.common.result.Result;
+import com.yeaile.common.result.StatusCode;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -16,8 +22,35 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 
 @RestController
-@RequestMapping("/api/ceviri/")
+@RequestMapping("/api/ceviri-kizlar/")
+@Api(tags = "文章类型管理")
 public class MetinTypeController {
+
+    @Autowired
+    private IMetinTypeService iMetinTypeService;
+
+    @ApiOperation("修改或添加文章类型")
+    @PutMapping(value = "v1/metinType")
+    public Result addOrUpdateMetinType(@RequestBody MetinTypeDTO metinTypeDTO){
+        iMetinTypeService.addOrUpdateMetinType(metinTypeDTO);
+        return new Result(true, StatusCode.OK,"basrildi");
+    }
+
+    @ApiOperation("获取单个文章类型")
+    @GetMapping(value = "v1/metinType/{id}")
+    public Result MetinType(@PathVariable String id){
+        MetinTypeVO metinTypeVO =  iMetinTypeService.MetinType(id);
+        return new Result(true, StatusCode.OK,metinTypeVO);
+    }
+
+
+    @ApiOperation("获取文章类型树形结构")
+    @GetMapping(value = "v1/metinType")
+    public Result MetinTypeTree(){
+        MetinTypeVO metinTypeVO =  iMetinTypeService.MetinTypeTree();
+        return new Result(true, StatusCode.OK,metinTypeVO);
+    }
+
 
 }
 

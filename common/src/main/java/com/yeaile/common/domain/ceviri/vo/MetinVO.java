@@ -1,10 +1,8 @@
-package com.yeaile.ceviri.vo;
+package com.yeaile.common.domain.ceviri.vo;
 
 
 import java.io.Serializable;
-import java.math.BigInteger;
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
@@ -22,7 +20,7 @@ import lombok.Builder;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CeviriVO implements Serializable {
+public class MetinVO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -35,25 +33,26 @@ public class CeviriVO implements Serializable {
 	 */
      private String userId;
 	/**
-	 * 原文id
-	 */
-     private String metinId;
-	/**
-	 * 译文标题
+	 * 标题
 	 */
      private String title;
 	/**
-	 * 译文正文
+	 * 文章正文
 	 */
      private String content;
 	/**
 	 * 审核状态
 	 */
-     private String state;
+     private Integer status;
 	/**
 	 * URL
 	 */
      private String url;
+	/**
+	 * 文章类型
+	 */
+     private String metinType;
+
 
 
 

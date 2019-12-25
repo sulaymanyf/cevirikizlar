@@ -21,56 +21,47 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CeviriDTO implements Serializable {
+public class MetinQueryDTO implements Serializable {
 
 private static final long serialVersionUID = 1L;
 
-	/**
-	 * ID
-	 */
-    private String id;
+
 
 	/**
 	 * 用户ID
 	 */
-    private String userId;
+    private String userName;
 
 	/**
-	 * 原文id
-	 */
-    private String metinId;
-
-	/**
-	 * 译文标题
+	 * 标题
 	 */
     private String title;
 
 	/**
-	 * 译文正文
+	 * 文章正文
 	 */
     private String content;
 
 	/**
 	 * 创建日期
 	 */
-    private LocalDateTime createTime;
+    private LocalDateTime startTime;
 
 	/**
 	 * 修改日期
 	 */
-    private LocalDateTime updateTime;
+    private LocalDateTime endTime;
 
 	/**
 	 * 审核状态
 	 */
-    private Integer state;
+    private Integer status;
+
 
 	/**
-	 * URL
+	 * 文章类型
 	 */
-    private String url;
-
-    private Integer deleteFlag;
+    private String metinType;
 
 
 

@@ -22,8 +22,8 @@ import java.io.ByteArrayOutputStream;
  * @return
  **/
 @RestController
-@RequestMapping("/api/code/")
-@Api(description = "验证码")
+@RequestMapping("/api/ceviri-kizlar/")
+@Api(tags = "验证码")
 public class CodeController {
 
     @Autowired

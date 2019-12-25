@@ -48,8 +48,8 @@ private static final long serialVersionUID=1L;
         /**
          * 审核状态
          */
-        @TableField("state")
-            private String state;
+        @TableField("status")
+            private Integer status;
 
         /**
          * URL

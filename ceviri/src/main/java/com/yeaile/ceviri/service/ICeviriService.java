@@ -1,6 +1,7 @@
 package com.yeaile.ceviri.service;
 
 
+import com.yeaile.common.domain.ceviri.vo.CeviriVO;
 
 /**
  * <p>
@@ -11,5 +12,7 @@ package com.yeaile.ceviri.service;
  * @since 2019-12-25
  */
 public interface ICeviriService {
+
+    CeviriVO cevir(String id);
 
 }

@@ -72,7 +72,7 @@
             and user_status = #{queryDto.userStatus}
         </if>
         <if test="queryDto.userName != null and queryDto.userName != ''">
-            and user_namelike concat('%', #{queryDto.userName}, '%')
+            and user_name like concat('%', #{queryDto.userName}, '%')
         </if>
         <if test="queryDto.birthDay != null">
             and birth_day = #{queryDto.birthDay}

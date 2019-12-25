@@ -1,6 +1,8 @@
 package com.yeaile.ceviri.service;
 
 
+import com.yeaile.common.domain.ceviri.dto.MetinTypeDTO;
+import com.yeaile.common.domain.ceviri.vo.MetinTypeVO;
 
 /**
  * <p>
@@ -11,5 +13,12 @@ package com.yeaile.ceviri.service;
  * @since 2019-12-25
  */
 public interface IMetinTypeService {
+
+    void addOrUpdateMetinType(MetinTypeDTO metinTypeDTO);
+
+    MetinTypeVO MetinType(String id);
+
+    MetinTypeVO MetinTypeTree();
+
 
 }

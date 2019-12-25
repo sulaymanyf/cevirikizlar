@@ -10,7 +10,7 @@
         <result column="content" property="content" />
         <result column="create_time" property="createTime" />
         <result column="update_time" property="updateTime" />
-        <result column="state" property="state" />
+        <result column="status" property="status" />
         <result column="url" property="url" />
         <result column="metin_type" property="metinType" />
         <result column="delete_flag" property="deleteFlag" />
@@ -24,10 +24,38 @@
  content, 
  create_time, 
  update_time, 
- state, 
+ status,
  url, 
  metin_type, 
  delete_flag
 
     </sql>
+    <select id="pageSelect" resultType="com.yeaile.common.domain.ceviri.vo.MetinVO">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_metin
+        <if test="queryDto.userName != null and queryDto.userName != '' ">
+            ,(select id as userid , user_name from tb_user where user_name like concat('%', #{queryDto.userName}, '%')) as t
+            where user_id = t.userid
+        </if>
+        <if test="queryDto.title != null and queryDto.title != '' ">
+            and title like concat('%', #{queryDto.title}, '%')
+        </if>
+        <if test="queryDto.content != null and queryDto.content != ''">
+            and content concat('%', #{queryDto.content}, '%')
+        </if>
+        <if test="queryDto.status != null">
+            and status = #{queryDto.status}
+        </if>
+        <if test="queryDto.metinType != null">
+            and metin_type = #{queryDto.metinType}
+        </if>
+        <if test="queryDto.startTime!=null">
+            AND (
+            createTime  BETWEEN #{queryDto.startTime}
+            AND #{queryDto.endTime}
+            )
+        </if>
+        order by create_time, update_time desc
+    </select>
 </mapper>
