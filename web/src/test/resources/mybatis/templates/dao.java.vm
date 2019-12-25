@@ -1,0 +1,20 @@
+package ${cfg.daoPackage};
+
+import ${cfg.entityPackage}.${cfg.entityName};
+import ${cfg.daoSuperClass};
+
+/**
+ * <p>
+ * $!{table.comment} Mapper 接口
+ * </p>
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+#if(${kotlin})
+interface ${cfg.daoName} : ${cfg.daoSuperClassName}<${entity}>
+#else
+public interface ${cfg.daoName} extends ${cfg.daoSuperClassName}<${cfg.entityName}> {
+
+}
+#end

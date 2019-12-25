@@ -1,0 +1,27 @@
+package ${cfg.serviceImplPackage};
+
+import ${cfg.dtoPackage}.${cfg.dtoName};
+import ${cfg.servicePackage}.${cfg.serviceName};
+import ${cfg.daoPackage}.${cfg.daoName};
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+
+
+/**
+ * <p>
+ * $!{table.comment} 服务实现类
+ * </p>
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+#set($serviceSacnNameLength = $cfg.serviceImplName.length())
+#set($serviceSacnName = $cfg.serviceImplName.substring(0,1).toLowerCase())
+#set($entityNameLength = $cfg.entityName.length())
+@Service
+public class ${cfg.serviceImplName} implements ${cfg.serviceName} {
+
+    @Autowired
+    private ${cfg.daoName} $cfg.entityName.substring(0,1).toLowerCase()$cfg.entityName.substring(1,$entityNameLength)Mapper ;
+}

@@ -1,0 +1,77 @@
+server:
+  port: 9000
+spring:
+  application:
+    name: yeaile-irfan #指定服务名
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/cevirikizlar?characterEncoding=UTF8&serverTimezone=UTC
+    username: root
+    password: 123456
+  redis:
+    host: localhost
+    port: 6379
+  rabbitmq:
+    host: 192.168.33.128
+  data:
+    mongodb:
+      host: localhost
+      port: 28017
+      database: recruitdb
+    elasticsearch:
+      cluster-nodes: localhost:9300
+  servlet:
+    multipart:
+      max-request-size: 100MB
+      max-file-size: 50MB
+  devtools:
+    restart:
+      additional-exclude:
+      additional-paths:
+      trigger-file:
+jwt:
+  token:
+    secret: ussuon
+    expiration: 3600000
+
+
+
+file:
+  rootPath: E
+  sonPath: /img/
+
+
+blog:
+  upload:
+    path: /data
+
+
+mybatis-plus:
+  mapper-locations: classpath*:com/yeaile/**/mapper/**/*Mapper.xml
+    # 实体扫描，多个package用逗号或者分号分隔
+  global-config:
+    db-config:
+      logic-delete-value: 1 # 逻辑已删除值(默认为 1)
+      logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+
+# 过滤
+secure:
+  ignored:
+    urls: #安全路径白名单
+      - /swagger-ui.html
+#      - /api/admin/user/**
+      - /swagger-resources/**
+      - /swagger/**
+      - /**/v2/api-docs
+      - /**/*.js
+      - /**/*.css
+      - /**/*.png
+      - /**/*.ico
+      - /webjars/springfox-swagger-ui/**
+      - /druid/**
+      - /actuator/**
+      - /sso/**
+      - /home/**

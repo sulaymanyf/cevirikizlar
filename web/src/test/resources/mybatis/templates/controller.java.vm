@@ -1,0 +1,28 @@
+package ${cfg.controllerPackage};
+
+import ${cfg.dtoPackage}.${cfg.dtoName};
+import ${cfg.servicePackage}.${cfg.serviceName};
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+
+/**
+ * <p>
+ * $!{table.comment} 前端控制器
+ * </p>
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+#set($serviceSacnNameLength = $cfg.serviceImplName.length())
+#set($serviceNameLength = $cfg.serviceName.length())
+#set($serviceSacnName = $cfg.serviceImplName.substring(0,1).toLowerCase())
+
+@RestController
+@RequestMapping("/api/${cfg.moduleName}/")
+public class ${cfg.controllerName} {
+
+    @Autowired
+    private ${cfg.serviceName}  $cfg.serviceName.substring(1,2).toLowerCase()$cfg.serviceName.substring(2,$serviceNameLength);
+}
+
