@@ -8,6 +8,11 @@
         <result column="user_id" property="userId" />
         <result column="title" property="title" />
         <result column="content" property="content" />
+        <result column="language" property="language" />
+        <result column="to_language" property="toLanguage" />
+        <result column="language" property="language" />
+        <result column="content" property="content" />
+        <result column="tag_id" property="tagId" />
         <result column="create_time" property="createTime" />
         <result column="update_time" property="updateTime" />
         <result column="status" property="status" />
@@ -21,10 +26,13 @@
  id, 
  user_id, 
  title, 
- content, 
+ content,
+ language,
+ to_language,
  create_time, 
  update_time, 
  status,
+ tag_id,
  url, 
  metin_type, 
  delete_flag

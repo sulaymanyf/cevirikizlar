@@ -63,6 +63,7 @@ public class MetinServiceImpl implements IMetinService {
 
             // 生成译文
             Ceviri ceviri = new Ceviri();
+            ceviri.setId(IdWorkerUtil.getIdStr());
             ceviri.setMetinId(id);
             ceviri.setState(MetinSatus.NEW.getCode());
             ceviriMapper.insert(ceviri);

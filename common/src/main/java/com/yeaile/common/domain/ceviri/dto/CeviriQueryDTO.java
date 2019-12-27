@@ -21,14 +21,11 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CeviriDTO implements Serializable {
+public class CeviriQueryDTO implements Serializable {
 
 private static final long serialVersionUID = 1L;
 
-	/**
-	 * ID
-	 */
-    private String id;
+
 
 	/**
 	 * 用户ID
@@ -53,22 +50,18 @@ private static final long serialVersionUID = 1L;
 	/**
 	 * 创建日期
 	 */
-    private LocalDateTime createTime;
+    private LocalDateTime startTime;
 
 	/**
 	 * 修改日期
 	 */
-    private LocalDateTime updateTime;
+    private LocalDateTime endTime;
 
 	/**
 	 * 审核状态
 	 */
     private Integer state;
 
-	/**
-	 * URL
-	 */
-    private String url;
 
 
 

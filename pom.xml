@@ -21,6 +21,7 @@
         <module>user</module>
         <module>ceviri</module>
         <module>web</module>
+        <module>tag</module>
     </modules>
 
     <properties>
@@ -46,6 +47,8 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
+
+
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>

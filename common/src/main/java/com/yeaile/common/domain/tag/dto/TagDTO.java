@@ -1,4 +1,4 @@
-package com.yeaile.common.domain.ceviri.dto;
+package com.yeaile.common.domain.tag.dto;
 
 
 import lombok.AllArgsConstructor;
@@ -11,17 +11,17 @@ import java.time.LocalDateTime;
 
 /**
  * <p>
- * 原文
+ * 标签
  * </p>
  *
  * @author sulaymanyf
- * @since 2019-12-25
+ * @since 2019-12-27
  */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CeviriDTO implements Serializable {
+public class TagDTO implements Serializable {
 
 private static final long serialVersionUID = 1L;
 
@@ -31,24 +31,14 @@ private static final long serialVersionUID = 1L;
     private String id;
 
 	/**
-	 * 用户ID
+	 * tag名称
 	 */
-    private String userId;
+    private String tagName;
 
 	/**
-	 * 原文id
+	 * tag颜色
 	 */
-    private String metinId;
-
-	/**
-	 * 译文标题
-	 */
-    private String title;
-
-	/**
-	 * 译文正文
-	 */
-    private String content;
+    private String tagColor;
 
 	/**
 	 * 创建日期
@@ -59,20 +49,6 @@ private static final long serialVersionUID = 1L;
 	 * 修改日期
 	 */
     private LocalDateTime updateTime;
-
-	/**
-	 * 审核状态
-	 */
-    private Integer state;
-
-	/**
-	 * URL
-	 */
-    private String url;
-
-
-
-
 
 
 }

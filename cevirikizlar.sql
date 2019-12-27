@@ -150,3 +150,16 @@ CREATE TABLE `tb_user_role`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_turkish_ci ROW_FORMAT = Dynamic;
 
 SET FOREIGN_KEY_CHECKS = 1;
+
+
+create table tb_tag
+(
+    id          varchar(20)  not null comment 'ID'
+        primary key,
+    tag_name       varchar(40) null comment 'tag名称',
+    tag_color       varchar(20) null comment 'tag颜色',
+    create_time datetime     null comment '创建日期',
+    update_time datetime     null comment '修改日期',
+    delete_flag tinyint(1)   null
+)
+    comment '标签' charset = utf8mb4;

@@ -9,6 +9,7 @@
         <result column="metin_id" property="metinId" />
         <result column="title" property="title" />
         <result column="content" property="content" />
+        <result column="language" property="language" />
         <result column="create_time" property="createTime" />
         <result column="update_time" property="updateTime" />
         <result column="state" property="state" />
@@ -24,10 +25,46 @@
  title, 
  content, 
  create_time, 
- update_time, 
+ update_time,
+ language,
  state, 
  url, 
  delete_flag
 
     </sql>
+
+    <select id="findPage" resultType="com.yeaile.common.domain.ceviri.vo.CeviriVO">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_ceviri
+        <if test="queryDto.userName != null and queryDto.userName != '' ">
+            ,(select id as userid , user_name from tb_user where user_name like concat('%', #{queryDto.userName}, '%')) as t
+            where user_id = t.userid
+        </if>
+        <if test="queryDto.title != null and queryDto.title != '' ">
+            and title like concat('%', #{queryDto.title}, '%')
+        </if>
+        <if test="queryDto.content != null and queryDto.content != ''">
+            and content concat('%', #{queryDto.content}, '%')
+        </if>
+        <if test="queryDto.metinId != null">
+            and metin_id = #{queryDto.metinId}
+        </if>
+        <if test="queryDto.status != null">
+            and status = #{queryDto.status}
+        </if>
+        <if test="queryDto.startTime!=null">
+            AND (
+            createTime  BETWEEN #{queryDto.startTime}
+            AND #{queryDto.endTime}
+            )
+        </if>
+        order by create_time, update_time desc
+    </select>
+    <select id="selectByMetinId" resultType="com.yeaile.ceviri.entity.Ceviri">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_ceviri where metin_id = #{metinId} and delete_flag=0
+
+    </select>
 </mapper>

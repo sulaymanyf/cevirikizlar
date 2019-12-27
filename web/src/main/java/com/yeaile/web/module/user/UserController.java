@@ -37,7 +37,7 @@ import java.io.ByteArrayOutputStream;
 
 @RestController
 @RequestMapping("/api/ceviri-kizlar/user/")
-@Api(description = "用户")
+@Api(tags = "用户管理")
 public class UserController {
 
     @Autowired

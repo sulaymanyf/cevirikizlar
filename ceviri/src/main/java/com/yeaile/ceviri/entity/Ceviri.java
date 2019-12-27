@@ -1,10 +1,12 @@
 package com.yeaile.ceviri.entity;
+
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-
-
 import com.yeaile.common.base.entity.BaseEntity;
-import lombok.*;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import lombok.experimental.Tolerate;
 
 /**
@@ -22,52 +24,53 @@ import lombok.experimental.Tolerate;
 @TableName("tb_ceviri")
 public class Ceviri extends BaseEntity {
 
-private static final long serialVersionUID=1L;
+    private static final long serialVersionUID = 1L;
 
 
-        /**
-         * 用户ID
-         */
-        @TableField("user_id")
-            private String userId;
+    /**
+     * 用户ID
+     */
+    @TableField("user_id")
+    private String userId;
 
-        /**
-         * 原文id
-         */
-        @TableField("metin_id")
-            private String metinId;
+    /**
+     * 原文id
+     */
+    @TableField("metin_id")
+    private String metinId;
 
-        /**
-         * 译文标题
-         */
-        @TableField("title")
-            private String title;
+    /**
+     * 译文标题
+     */
+    @TableField("title")
+    private String title;
 
-        /**
-         * 译文正文
-         */
-        @TableField("content")
-            private String content;
+    /**
+     * 译文正文
+     */
+    @TableField("content")
+    private String content;
 
-        /**
-         * 审核状态
-         */
-        @TableField("state")
-            private Integer state;
+    /**
+     * 审核状态
+     */
+    @TableField("state")
+    private Integer state;
 
-        /**
-         * URL
-         */
-        @TableField("url")
-            private String url;
-
-        @TableField("delete_flag")
-            private Integer deleteFlag;
+    /**
+     * URL
+     */
+    @TableField("url")
+    private String url;
 
 
+    @TableField("language")
+    private Integer language;
 
-@Tolerate public Ceviri(){
+
+    @Tolerate
+    public Ceviri() {
     }
 
 
-    }
+}
