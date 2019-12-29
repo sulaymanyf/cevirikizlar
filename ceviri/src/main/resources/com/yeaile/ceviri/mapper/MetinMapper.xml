@@ -4,21 +4,22 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.yeaile.ceviri.entity.Metin">
-        <id column="id" property="id" />
-        <result column="user_id" property="userId" />
-        <result column="title" property="title" />
-        <result column="content" property="content" />
-        <result column="language" property="language" />
-        <result column="to_language" property="toLanguage" />
-        <result column="language" property="language" />
-        <result column="content" property="content" />
-        <result column="tag_id" property="tagId" />
-        <result column="create_time" property="createTime" />
-        <result column="update_time" property="updateTime" />
-        <result column="status" property="status" />
-        <result column="url" property="url" />
-        <result column="metin_type" property="metinType" />
-        <result column="delete_flag" property="deleteFlag" />
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="title" property="title"/>
+        <result column="content" property="content"/>
+        <result column="language" property="language"/>
+        <result column="to_language" property="toLanguage"/>
+        <result column="language" property="language"/>
+        <result column="content" property="content"/>
+        <result column="mark" property="mark"/>
+        <result column="tag_id" property="tagId"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="status" property="status"/>
+        <result column="url" property="url"/>
+        <result column="metin_type" property="metinType"/>
+        <result column="delete_flag" property="deleteFlag"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
@@ -34,16 +35,37 @@
  status,
  tag_id,
  url, 
- metin_type, 
+ metin_type,
+ mark,
  delete_flag
 
     </sql>
+
+    <sql id="Base_Column_List_t">
+  t.id,
+        t.user_id,
+        t.title,
+        t.content,
+        t.language,
+        t.to_language,
+        t.create_time,
+        t.update_time,
+        t.status,
+        t.tag_id,
+        t.url,
+        t.mark,
+        t.metin_type,
+        t.delete_flag,
+       tu.user_name, tmt.type_name
+    </sql>
     <select id="pageSelect" resultType="com.yeaile.common.domain.ceviri.vo.MetinVO">
         select
-        <include refid="Base_Column_List"/>
-        from tb_metin
+        <include refid="Base_Column_List_t"/>
+        from tb_metin as t left join tb_user tu on t.user_id = tu.id and tu.delete_flag=0 left join tb_metin_type tmt on
+        t.metin_type = tmt.id
         <if test="queryDto.userName != null and queryDto.userName != '' ">
-            ,(select id as userid , user_name from tb_user where user_name like concat('%', #{queryDto.userName}, '%')) as t
+            ,(select id as userid , user_name from tb_user where user_name like concat('%', #{queryDto.userName}, '%'))
+            as t
             where user_id = t.userid
         </if>
         <if test="queryDto.title != null and queryDto.title != '' ">
@@ -60,7 +82,7 @@
         </if>
         <if test="queryDto.startTime!=null">
             AND (
-            createTime  BETWEEN #{queryDto.startTime}
+            createTime BETWEEN #{queryDto.startTime}
             AND #{queryDto.endTime}
             )
         </if>

@@ -22,6 +22,7 @@
         <module>ceviri</module>
         <module>web</module>
         <module>tag</module>
+        <module>file</module>
     </modules>
 
     <properties>

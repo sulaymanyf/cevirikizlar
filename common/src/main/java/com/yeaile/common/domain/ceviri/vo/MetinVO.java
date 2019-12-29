@@ -32,6 +32,11 @@ public class MetinVO implements Serializable {
 	 * 用户ID
 	 */
      private String userId;
+
+	/**
+	 * 用户ID
+	 */
+	private String userName;
 	/**
 	 * 标题
 	 */
@@ -52,6 +57,19 @@ public class MetinVO implements Serializable {
 	 * 文章类型
 	 */
      private String metinType;
+
+	/**
+	 * 文章类型name
+	 */
+	private String typeName;
+	/**
+	 * 文章类备注
+	 */
+	private String mark;
+
+
+
+	private String fileType;
 
 
 

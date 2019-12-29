@@ -1,4 +1,4 @@
-package com.yeaile.user.vo;
+package com.yeaile.common.domain.user.vo;
 
 
 import java.io.Serializable;

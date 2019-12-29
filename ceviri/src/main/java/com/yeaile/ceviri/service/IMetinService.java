@@ -6,6 +6,8 @@ import com.yeaile.common.domain.ceviri.dto.MetinDTO;
 import com.yeaile.common.domain.ceviri.dto.MetinQueryDTO;
 import com.yeaile.common.domain.ceviri.vo.MetinVO;
 
+import java.io.IOException;
+
 /**
  * <p>
  * 原文 服务类
@@ -20,6 +22,8 @@ public interface IMetinService {
 
     void addOrUpdateMetin(MetinDTO metinDTO);
 
-    IPage<MetinVO> listMetin(MetinQueryDTO metinDTO);
+    IPage<MetinVO> listMetin(int current, int pageSize, MetinQueryDTO metinDTO);
+
+    void addMetin(MetinDTO metinDTO) throws IOException;
 
 }

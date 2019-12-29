@@ -72,6 +72,12 @@ public class Metin extends BaseEntity {
     @TableField("tag_id")
     private Integer tagId;
 
+    /**
+     * 文章备注
+     */
+    @TableField("mark")
+    private String mark;
+
 
     @Tolerate
     public Metin() {

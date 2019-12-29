@@ -1,10 +1,8 @@
-package com.yeaile.user.vo;
+package com.yeaile.common.domain.user.vo;
 
 
 import java.io.Serializable;
-import java.math.BigInteger;
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
@@ -22,22 +20,18 @@ import lombok.Builder;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class RoleVO implements Serializable {
+public class UserRoleVO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * 主键ID
+	 * 角色ID
 	 */
-     private String id;
+     private String roleId;
 	/**
-	 * 权限名称
+	 * 权限ID
 	 */
-     private String roleName;
-	/**
-	 * 说明
-	 */
-     private String description;
+     private String userId;
 
 
 

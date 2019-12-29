@@ -46,16 +46,6 @@ private static final long serialVersionUID = 1L;
     private String content;
 
 	/**
-	 * 创建日期
-	 */
-    private LocalDateTime createTime;
-
-	/**
-	 * 修改日期
-	 */
-    private LocalDateTime updateTime;
-
-	/**
 	 * 审核状态
 	 */
     private Integer state;
@@ -70,7 +60,12 @@ private static final long serialVersionUID = 1L;
 	 */
     private String metinType;
 
-    private Integer deleteFlag;
+
+    private String fileId;
+
+    private String mark;
+
+
 
 
 

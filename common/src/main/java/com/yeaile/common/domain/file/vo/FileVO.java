@@ -1,10 +1,8 @@
-package com.yeaile.user.vo;
+package com.yeaile.common.domain.file.vo;
 
 
 import java.io.Serializable;
-import java.math.BigInteger;
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
@@ -16,24 +14,26 @@ import lombok.Builder;
  * </p>
  *
  * @author sulaymanyf
- * @since 2019-12-24
+ * @since 2019-12-28
  */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserRoleVO implements Serializable {
+public class FileVO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+     private String id;
+     private String fileName;
 	/**
-	 * 角色ID
+	 * 审核状态
 	 */
-     private String roleId;
+     private Integer state;
 	/**
-	 * 权限ID
+	 * URL
 	 */
-     private String userId;
+     private String url;
 
 
 
