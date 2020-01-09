@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yeaile.ceviri.mapper.EngSozlukMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yeaile.ceviri.entity.EngSoz">
+        <id column="id" property="id"/>
+        <result column="word" property="word"/>
+        <result column="phonetic" property="phonetic"/>
+        <result column="definition" property="definition"/>
+        <result column="translation" property="translation"/>
+        <result column="pos" property="pos"/>
+        <result column="collins" property="collins"/>
+        <result column="oxford" property="oxford"/>
+        <result column="tag" property="tag"/>
+        <result column="bnc" property="bnc"/>
+        <result column="frq" property="frq"/>
+        <result column="exchange" property="exchange"/>
+        <result column="detail" property="detail"/>
+        <result column="audio" property="audio"/>
+        <result column="turkish" property="turkish"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+         id,
+         word,
+         phonetic,
+         definition,
+         translation,
+         pos,
+         collins,
+         oxford,
+         tag,
+         bnc,
+         frq,
+         exchange,
+         detail,
+         audio,
+         turkish
+
+    </sql>
+    <select id="selectListByWord" resultType="java.lang.String">
+        select word from eng_sozluk where  word  like CONCAT(#{keyword},'%')
+    </select>
+
+
+</mapper>
