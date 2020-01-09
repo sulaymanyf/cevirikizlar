@@ -39,6 +39,7 @@ public class CodeController {
         try {
             //生产验证码字符串并保存到session中
             String createText = defaultKaptcha.createText();
+            System.out.println(createText);
             httpServletRequest.getSession().setAttribute("vrifyCode", createText);
             //使用生产的验证码字符串返回一个BufferedImage对象并转为byte写入到byte数组中
             BufferedImage challenge = defaultKaptcha.createImage(createText);

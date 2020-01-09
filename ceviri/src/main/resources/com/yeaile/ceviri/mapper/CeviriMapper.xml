@@ -12,6 +12,7 @@
         <result column="language" property="language" />
         <result column="create_time" property="createTime" />
         <result column="update_time" property="updateTime" />
+        <result column="cevir_file_id" property="cevirFileId" />
         <result column="state" property="state" />
         <result column="url" property="url" />
         <result column="delete_flag" property="deleteFlag" />
@@ -27,7 +28,8 @@
  create_time, 
  update_time,
  language,
- state, 
+ state,
+ cevir_file_id,
  url, 
  delete_flag
 

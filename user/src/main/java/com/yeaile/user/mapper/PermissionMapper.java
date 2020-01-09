@@ -2,8 +2,10 @@ package com.yeaile.user.mapper;
 
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.yeaile.common.domain.user.vo.PermissionVO;
 import com.yeaile.user.entity.Permission;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -20,4 +22,5 @@ public interface PermissionMapper extends BaseMapper<Permission> {
 
     List<Permission> getAllPermissionWithRole();
 
+    List<String> getAllPathsByUserName(@Param("username") String username);
 }

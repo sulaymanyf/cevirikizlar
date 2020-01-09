@@ -38,7 +38,6 @@ import java.util.Map;
  * @return
  **/
 @Slf4j
-@Component
 public class JwtTokenUtil {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JwtTokenUtil.class);

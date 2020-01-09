@@ -61,4 +61,13 @@
         where tp.id = trp.permission_id
           and trp.role_id = tr.id
     </select>
+    <select id="getAllPathsByUserName" resultType="java.lang.String">
+        select  tp.url
+        from  tb_user_role as tur
+                 left join tb_role as tr on tur.role_id=tr.id
+                 left join tb_role_permission trp on tr.id = trp.role_id
+                 left join tb_permission tp on tp.id = trp.permission_id
+        where user_id = (select id from tb_user where user_name = #{username})
+    </select>
+
 </mapper>

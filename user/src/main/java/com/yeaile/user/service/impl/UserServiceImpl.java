@@ -13,9 +13,7 @@ import com.yeaile.common.domain.user.vo.UserAndRoleVo;
 import com.yeaile.common.domain.user.vo.UserVo;
 import com.yeaile.common.result.Result;
 import com.yeaile.common.result.StatusCode;
-import com.yeaile.common.utils.BeanUtil;
-import com.yeaile.common.utils.IdWorkerUtil;
-import com.yeaile.common.utils.JwtTokenUtil;
+import com.yeaile.common.utils.*;
 import com.yeaile.user.entity.Role;
 import com.yeaile.user.entity.User;
 import com.yeaile.user.entity.UserRole;
@@ -35,8 +33,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
 import javax.annotation.Resource;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -50,7 +50,7 @@ import java.util.List;
  */
 @Service
 @Slf4j
-public class UserServiceImpl implements IUserService , UserDetailsService {
+public class UserServiceImpl implements IUserService, UserDetailsService {
 
 
     @Resource
@@ -84,14 +84,29 @@ public class UserServiceImpl implements IUserService , UserDetailsService {
         user.setId(IdWorkerUtil.getIdStr());
         user.setUserStatus(UserStatus.NORMAL.getCode());
         userMapper.insert(user);
+        Role role = roleMapper.selectByName("ROLE_user");
+        if (role==null){
+            role = new Role();
+            role.setId(IdWorkerUtil.getIdStr());
+            role.setRoleName("ROLE_user");
+            role.setDescription("基础用户");
+            roleMapper.insert(role);
+        }
+        UserRole userRole = new UserRole();
+        userRole.setId(IdWorkerUtil.getIdStr());
+        userRole.setRoleId(role.getId());
+        userRole.setUserId(user.getId());
+        userRoleMapper.insert(userRole);
         UserVo userVo = BeanUtil.copy(userMapper.selectById(user), UserVo.class);
+        RoleVO roleVO = BeanUtil.copy(role, RoleVO.class);
+        userVo.setRoleVOS(new ArrayList<RoleVO>(){{add(roleVO);}});
         return userVo;
     }
 
-    public User getUserByUserName(String userName){
+    public User getUserByUserName(String userName) {
         User user = this.userMapper.getUserByUserName(userName);
 
-        if (user==null){
+        if (user == null) {
             //抛异常
         }
         return user;
@@ -151,9 +166,9 @@ public class UserServiceImpl implements IUserService , UserDetailsService {
 
 
     @Override
-    public UserAndRoleVo selectByName(String username){
+    public UserAndRoleVo selectByName(String username) {
         User user = userMapper.getUserByUserName(username);
-        UserAndRoleVo userAndRoleVo  = BeanUtil.copy(user, UserAndRoleVo.class);
+        UserAndRoleVo userAndRoleVo = BeanUtil.copy(user, UserAndRoleVo.class);
         List<String> roleList = userRoleMapper.selectByUserId(user.getId());
         List<Role> roles = roleMapper.selectBatchIds(roleList);
         List<RoleVO> roleVOS = BeanUtil.copyList(roles, RoleVO.class);
@@ -165,7 +180,7 @@ public class UserServiceImpl implements IUserService , UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserAndRoleVo user = this.selectByName(username);
 
-        if (user==null){
+        if (user == null) {
             throw new UsernameNotFoundException("用户名不存在!");
         }
         return user;

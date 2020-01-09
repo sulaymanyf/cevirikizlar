@@ -34,7 +34,8 @@ public class SwaggerConfig {
         return new Docket(DocumentationType.SWAGGER_2)
                 .pathMapping("/")
                 .apiInfo(apiInfo())
-                .enable(true) //开启
+                //开启
+                .enable(true)
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.yeaile.web.module"))
                 .paths(PathSelectors.any())

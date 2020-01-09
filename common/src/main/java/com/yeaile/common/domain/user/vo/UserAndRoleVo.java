@@ -1,6 +1,7 @@
 package com.yeaile.common.domain.user.vo;
 
 
+import com.yeaile.common.utils.CollectionUtil;
 import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;

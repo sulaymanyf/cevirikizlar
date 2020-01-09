@@ -2,6 +2,7 @@ package com.yeaile.web.config;
 
 import com.yeaile.common.domain.user.vo.PermissionVO;
 import com.yeaile.common.domain.user.vo.RoleVO;
+import com.yeaile.common.utils.CollectionUtil;
 import com.yeaile.user.service.IPermissionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.ConfigAttribute;
@@ -34,14 +35,16 @@ public class CustomFilterInvocationSecurityMetadataSource implements FilterInvoc
     public Collection<ConfigAttribute> getAttributes(Object object) throws IllegalArgumentException {
         String requestUrl = ((FilterInvocation) object).getRequestUrl();
         List<PermissionVO> permissions = permissionService.getAllPermissionWithRole();
-        for (PermissionVO permission : permissions) {
-            if (antPathMatcher.match(permission.getUrl(), requestUrl)) {
-                List<RoleVO> roles = permission.getRoles();
-                String[] str = new String[roles.size()];
-                for (int i = 0; i < roles.size(); i++) {
-                    str[i] = roles.get(i).getRoleName();
+        if (CollectionUtil.isNotEmpty(permissions)){
+            for (PermissionVO permission : permissions) {
+                if (antPathMatcher.match(permission.getUrl(), requestUrl)) {
+                    List<RoleVO> roles = permission.getRoles();
+                    String[] str = new String[roles.size()];
+                    for (int i = 0; i < roles.size(); i++) {
+                        str[i] = roles.get(i).getRoleName();
+                    }
+                    return SecurityConfig.createList(str);
                 }
-                return SecurityConfig.createList(str);
             }
         }
         return SecurityConfig.createList("ROLE_LOGIN");

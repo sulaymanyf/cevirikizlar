@@ -18,4 +18,5 @@ public interface IPermissionService {
 
     List<PermissionVO> getAllPermissionWithRole();
 
+    List<String> getAllPathsByUserName(String username);
 }

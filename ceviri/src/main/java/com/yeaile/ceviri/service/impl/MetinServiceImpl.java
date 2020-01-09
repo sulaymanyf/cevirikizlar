@@ -1,7 +1,6 @@
 package com.yeaile.ceviri.service.impl;
 
 
-
 import com.google.common.base.Charsets;
 import com.yeaile.common.utils.HWPFUtil;
 import com.yeaile.file.entity.MyFile;
@@ -74,35 +73,14 @@ public class MetinServiceImpl implements IMetinService {
     public void addOrUpdateMetin(MetinDTO metinDTO) {
 
         Metin metin = BeanUtil.copy(metinDTO, Metin.class);
-        if (metinDTO.getId() == null) {
-            // 新增
-            // 添加原文
-
-            String id = IdWorkerUtil.getIdStr();
-            metin.setId(id);
-            metin.setStatus(MetinSatus.NEW.getCode());
-            metinMapper.insert(metin);
-
-
-            // 生成译文
-            Ceviri ceviri = new Ceviri();
-            ceviri.setId(IdWorkerUtil.getIdStr());
-            ceviri.setMetinId(id);
-            ceviri.setState(MetinSatus.NEW.getCode());
-            ceviriMapper.insert(ceviri);
-        } else {
-            //修改
-
-            Metin metinOld = metinMapper.selectById(metinDTO.getId());
-            if (metinOld.getStatus() == MetinSatus.END.getCode() || metinOld.getStatus() == MetinSatus.TRANSLATING.getCode()) {
-                // 抛异常
-                System.out.println("sssss");
-            }
-            metin.setId(metinOld.getId());
-            metinMapper.updateById(metin);
-
+        //修改
+        Metin metinOld = metinMapper.selectById(metinDTO.getId());
+        if (metinOld.getStatus() == MetinSatus.END.getCode() || metinOld.getStatus() == MetinSatus.TRANSLATING.getCode()) {
+            // 抛异常
+            System.out.println("sssss");
         }
-
+        metin.setId(metinOld.getId());
+        metinMapper.updateById(metin);
 
     }
 
@@ -119,67 +97,27 @@ public class MetinServiceImpl implements IMetinService {
     public void addMetin(MetinDTO metinDTO) throws IOException {
         Metin metin = BeanUtil.copy(metinDTO, Metin.class);
         MyFile myFile = fileMapper.selectById(metinDTO.getFileId());
-//        String path = ResourceUtils.getURL("classpath:").getPath();
-//        String projectPath = path.substring(0, path.indexOf("web"));
-//        String filePath= myFile.getPath();
-//        String content = HWPFUtil.wordExtractor(projectPath + filePath,myFile.getSuffix());
 
-//        File file = new File(projectPath+fileUrl);
-////        List<String> lines = new ArrayList<>();
-////        String sb = readFile(projectPath + fileUrl);
-//        List<String> lines = Files.readAllLines(Paths.get(projectPath+fileUrl), StandardCharsets.UTF_8);
-//        StringBuilder sb = new StringBuilder();
-//        for(String line : lines){
-//            sb.append(line);
-//        }
-
-
-
-//        boolean exception = true;
-//        StringBuilder sb = new StringBuilder();
-//        //Try the default one first.
-//
-//        Charset charset = Charset.defaultCharset();
-//        int index = 0;
-//        while(exception) {
-//            try {
-//                lines = Files.readAllLines(Paths.get(projectPath+fileUrl),charset);
-//                for (String line : lines) {
-//                    sb.append(line);
-//                }
-//                //No exception, just returns
-//                exception = false;
-//            } catch (IOException e) {
-//                exception = true;
-//                //Try the next charset
-//                if(index<Charset.availableCharsets().values().size()) {
-//                    charset = (Charset) Charset.availableCharsets().values().toArray()[index];
-//                }
-//                index ++;
-//            }
-//        }
-//        try (Stream<String> stream = Files.lines(Paths.get(projectPath+fileUrl))) {
-//            lines=stream.collect(Collectors.toList());
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        StringBuilder sb = new StringBuilder();
-//        for (String line : lines) {
-//            sb.append(line);
-//        }
+        String id = IdWorkerUtil.getIdStr();
         metin.setContent(myFile.getId());
-        metin.setId(IdWorkerUtil.getIdStr());
+        metin.setId(id);
+        metin.setStatus(MetinSatus.NEW.getCode());
         metinMapper.insert(metin);
 
-
+        // 生成译文
+        Ceviri ceviri = new Ceviri();
+        ceviri.setId(IdWorkerUtil.getIdStr());
+        ceviri.setMetinId(id);
+        ceviri.setState(MetinSatus.NEW.getCode());
+        ceviriMapper.insert(ceviri);
     }
 
 
-    public String  readFile(String filePath){
+    public String readFile(String filePath) {
         StringBuilder sb = new StringBuilder();
         try {
             InputStreamReader in = new InputStreamReader(new FileInputStream(
-                    filePath){{
+                    filePath) {{
 
             }}, Charsets.UTF_8);
 
@@ -190,7 +128,54 @@ public class MetinServiceImpl implements IMetinService {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-       return sb.toString();
+        return sb.toString();
     }
 }
 
+
+////        String path = ResourceUtils.getURL("classpath:").getPath();
+////        String projectPath = path.substring(0, path.indexOf("web"));
+////        String filePath= myFile.getPath();
+////        String content = HWPFUtil.wordExtractor(projectPath + filePath,myFile.getSuffix());
+//
+////        File file = new File(projectPath+fileUrl);
+//////        List<String> lines = new ArrayList<>();
+//////        String sb = readFile(projectPath + fileUrl);
+////        List<String> lines = Files.readAllLines(Paths.get(projectPath+fileUrl), StandardCharsets.UTF_8);
+////        StringBuilder sb = new StringBuilder();
+////        for(String line : lines){
+////            sb.append(line);
+////        }
+//
+//
+////        boolean exception = true;
+////        StringBuilder sb = new StringBuilder();
+////        //Try the default one first.
+////
+////        Charset charset = Charset.defaultCharset();
+////        int index = 0;
+////        while(exception) {
+////            try {
+////                lines = Files.readAllLines(Paths.get(projectPath+fileUrl),charset);
+////                for (String line : lines) {
+////                    sb.append(line);
+////                }
+////                //No exception, just returns
+////                exception = false;
+////            } catch (IOException e) {
+////                exception = true;
+////                //Try the next charset
+////                if(index<Charset.availableCharsets().values().size()) {
+////                    charset = (Charset) Charset.availableCharsets().values().toArray()[index];
+////                }
+////                index ++;
+////            }
+////        }
+////        try (Stream<String> stream = Files.lines(Paths.get(projectPath+fileUrl))) {
+////            lines=stream.collect(Collectors.toList());
+////        } catch (IOException e) {
+////            e.printStackTrace();
+////        }
+////        StringBuilder sb = new StringBuilder();
+////        for (String line : lines) {
+////            sb.append(line);

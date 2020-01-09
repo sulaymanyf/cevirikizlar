@@ -34,4 +34,11 @@ public class PermissionServiceImpl implements IPermissionService {
         permissionMapper.getAllPermissionWithRole();
         return null;
     }
+
+    @Override
+    public List<String> getAllPathsByUserName(String username) {
+        List<String> permissionVOS = permissionMapper.getAllPathsByUserName(username);
+
+        return permissionVOS;
+    }
 }

@@ -30,6 +30,8 @@ public class UserRole extends BaseEntity {
     /**
      * 角色ID
      */
+    @TableField("role_id")
+
     private String roleId;
 
     /**
@@ -38,8 +40,6 @@ public class UserRole extends BaseEntity {
     @TableField("user_id")
     private String userId;
 
-    @TableField("delete_flag")
-    private Integer deleteFlag;
 
 
     @Tolerate

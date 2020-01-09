@@ -24,6 +24,7 @@ public class FileServiceImpl implements IFileService {
     @Resource
     private FileMapper fileMapper ;
 
+
     @Override
     public String addFile(String filename,String suffixName,String filePath) {
         MyFile file = new MyFile();
@@ -37,6 +38,7 @@ public class FileServiceImpl implements IFileService {
 
     @Override
     public String getPathById(String id) {
+
         MyFile myFile = fileMapper.selectById(id);
         return myFile.getPath();
     }

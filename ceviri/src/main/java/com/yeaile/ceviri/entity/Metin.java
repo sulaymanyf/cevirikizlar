@@ -78,6 +78,12 @@ public class Metin extends BaseEntity {
     @TableField("mark")
     private String mark;
 
+    /**
+     * 文章备注
+     */
+    @TableField("price")
+    private String price;
+
 
     @Tolerate
     public Metin() {

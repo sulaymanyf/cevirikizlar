@@ -35,6 +35,8 @@ private static final long serialVersionUID = 1L;
 	 */
     private String userId;
 
+
+
 	/**
 	 * 原文id
 	 */
@@ -50,25 +52,11 @@ private static final long serialVersionUID = 1L;
 	 */
     private String content;
 
-	/**
-	 * 创建日期
-	 */
-    private LocalDateTime createTime;
 
 	/**
-	 * 修改日期
+	 * contentHtml
 	 */
-    private LocalDateTime updateTime;
-
-	/**
-	 * 审核状态
-	 */
-    private Integer state;
-
-	/**
-	 * URL
-	 */
-    private String url;
+    private String contentHtml;
 
 
 

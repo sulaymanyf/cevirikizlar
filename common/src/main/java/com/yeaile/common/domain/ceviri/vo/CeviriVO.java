@@ -53,6 +53,7 @@ public class CeviriVO implements Serializable {
 	 */
      private String url;
 
+     private String cevirFileId;
 
 
 }

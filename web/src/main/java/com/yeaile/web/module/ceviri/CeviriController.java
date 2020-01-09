@@ -49,10 +49,17 @@ public class CeviriController {
 
 
     @ApiOperation("译文操作")
-    @PutMapping(value = "v1/ceviri")
-    public Result saveCeviri(@RequestBody CeviriDTO ceviriDTO){
-        iCeviriService.saveCeviri(ceviriDTO);
+    @GetMapping(value = "v1/ceviri/{id}/{active}")
+    public Result saveCeviri(@PathVariable String id, @PathVariable String active){
         return new Result(true, StatusCode.OK,"sussess");
+    }
+
+
+    @ApiOperation("译文保存")
+    @PutMapping(value = "v1/ceviri")
+    public Result addCeviri(@RequestBody CeviriDTO ceviriDTO) throws Exception {
+        iCeviriService.saveCeviri(ceviriDTO);
+        return new Result(true, StatusCode.OK,"Kaydedildi.");
     }
 
 }

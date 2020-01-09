@@ -39,8 +39,6 @@ private static final long serialVersionUID=1L;
         @TableField("description")
             private String description;
 
-        @TableField("delete_flag")
-            private Integer deleteFlag;
 
 
 

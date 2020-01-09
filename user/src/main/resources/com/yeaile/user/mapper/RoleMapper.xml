@@ -21,4 +21,8 @@
          create_time,
          delete_flag
     </sql>
+    <select id="selectByName" resultType="com.yeaile.user.entity.Role">
+        select <include refid="Base_Column_List"/>
+        from tb_role where role_name = #{rolename} and delete_flag=0
+    </select>
 </mapper>

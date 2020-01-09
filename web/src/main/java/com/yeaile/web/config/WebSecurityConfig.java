@@ -1,13 +1,18 @@
 package com.yeaile.web.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yeaile.common.domain.user.vo.UserAndRoleVo;
+import com.yeaile.common.result.RespBean;
+import com.yeaile.common.result.Result;
+import com.yeaile.common.result.ResultCode;
 import com.yeaile.common.utils.JwtTokenUtil;
 import com.yeaile.user.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.*;
+import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -15,11 +20,24 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 /**
  * @param
@@ -36,6 +54,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private IUserService sysUserService;
     private RestfulAccessDeniedHandler restfulAccessDeniedHandler;
     private RestAuthenticationEntryPoint restAuthenticationEntryPoint;
+    private CustomFilterInvocationSecurityMetadataSource customFilterInvocationSecurityMetadataSource;
+    private CustomUrlDecisionManager customUrlDecisionManager;
+
 
     @Bean
     public IgnoreUrlsConfig ignoreUrlsConfig() {
@@ -65,31 +86,84 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                // 允许对于网站静态资源的无授权访问
-                .antMatchers(HttpMethod.GET,
-                        "/",
-                        "/*.html",
-                        "/favicon.ico",
-                        "/**/*.html",
-                        "/**/*.css",
-                        "/**/*.js",
-                        "/swagger-resources/**",
-                        "/v2/api-docs/**",
-                        "/**/showPic/**"
-                )
-                .permitAll()
                 // 对登录注册要允许匿名访问
-                .antMatchers("/user/v1/login", "/user/v1/register")
+                .anyRequest()
+                // 除上面外的所有请求全部需要鉴权认证
+                .access("@rbacauthorityservice.hasPermission(request,authentication)")
+                .and()
+                .formLogin()
+                //开启登录
+                .successHandler(new AuthenticationSuccessHandler() {
+                    @Override
+                    public void onAuthenticationSuccess(HttpServletRequest req, HttpServletResponse resp, Authentication authentication) throws IOException, ServletException {
+                        resp.setContentType("application/json;charset=utf-8");
+                        PrintWriter out = resp.getWriter();
+                        UserAndRoleVo userAndRoleVo = (UserAndRoleVo) authentication.getPrincipal();
+                        userAndRoleVo.setPassword(null);
+                        Result ok = new Result(true, ResultCode.SUCCESS.getCode(),userAndRoleVo);
+                        String s = new ObjectMapper().writeValueAsString(ok);
+                        out.write(s);
+                        out.flush();
+                        out.close();
+                    }
+                })
+                // 登录成功
+                .failureHandler(new AuthenticationFailureHandler() {
+                    @Override
+                    public void onAuthenticationFailure(HttpServletRequest req, HttpServletResponse resp, AuthenticationException exception) throws IOException, ServletException {
+                        resp.setContentType("application/json;charset=utf-8");
+                        PrintWriter out = resp.getWriter();
+                        RespBean respBean = RespBean.error(ResultCode.FAILURE.getMessage());
+                        if (exception instanceof LockedException) {
+                            respBean.setMsg("账户被锁定，请联系管理员!");
+                        } else if (exception instanceof CredentialsExpiredException) {
+                            respBean.setMsg("密码过期，请联系管理员!");
+                        } else if (exception instanceof AccountExpiredException) {
+                            respBean.setMsg("账户过期，请联系管理员!");
+                        } else if (exception instanceof DisabledException) {
+                            respBean.setMsg("账户被禁用，请联系管理员!");
+                        } else if (exception instanceof BadCredentialsException) {
+                            respBean.setMsg("用户名或者密码输入错误，请重新输入!");
+                        }
+                        out.write(new ObjectMapper().writeValueAsString(respBean));
+                        out.flush();
+                        out.close();
+                    }
+                })
+                // 登录失败
                 .permitAll()
-                .antMatchers( "/**/app/**")
+
+                .and()
+                .logout()
+                .logoutSuccessHandler(new LogoutSuccessHandler() {
+                    @Override
+                    public void onLogoutSuccess(HttpServletRequest req, HttpServletResponse resp, Authentication authentication) throws IOException, ServletException {
+                        resp.setContentType("application/json;charset=utf-8");
+                        PrintWriter out = resp.getWriter();
+                        out.write(new ObjectMapper().writeValueAsString(RespBean.ok("注销成功!")));
+                        out.flush();
+                        out.close();
+                    }
+                })
                 .permitAll()
-                //跨域请求会先进行一次options请求
-                .antMatchers(HttpMethod.OPTIONS)
-                .permitAll()
-//                .antMatchers("/**")//测试时全部运行访问
-//                .permitAll()
-                .anyRequest()// 除上面外的所有请求全部需要鉴权认证
-                .authenticated();
+                .and()
+                .csrf().disable().exceptionHandling()
+                //没有认证时，在这里处理结果，不要重定向
+                .authenticationEntryPoint(new AuthenticationEntryPoint() {
+                    @Override
+                    public void commence(HttpServletRequest req, HttpServletResponse resp, AuthenticationException authException) throws IOException, ServletException {
+                        resp.setContentType("application/json;charset=utf-8");
+                        resp.setStatus(401);
+                        PrintWriter out = resp.getWriter();
+                        RespBean respBean = RespBean.error("访问失败!");
+                        if (authException instanceof InsufficientAuthenticationException) {
+                            respBean.setMsg("请求失败，请联系管理员!");
+                        }
+                        out.write(new ObjectMapper().writeValueAsString(respBean));
+                        out.flush();
+                        out.close();
+                    }
+                });
         // 禁用缓存
         httpSecurity.headers().cacheControl();
         // 添加JWT filter
@@ -147,6 +221,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     public void setRestAuthenticationEntryPoint(RestAuthenticationEntryPoint restAuthenticationEntryPoint) {
         this.restAuthenticationEntryPoint = restAuthenticationEntryPoint;
+    }
+
+    @Autowired
+    public void  setCustomFilterInvocationSecurityMetadataSource (CustomFilterInvocationSecurityMetadataSource customFilterInvocationSecurityMetadataSource ){
+        this.customFilterInvocationSecurityMetadataSource= customFilterInvocationSecurityMetadataSource;
+    }
+    @Autowired
+    public void setCustomUrlDecisionManager (CustomUrlDecisionManager customUrlDecisionManager){
+        this.customUrlDecisionManager=customUrlDecisionManager;
     }
 
 

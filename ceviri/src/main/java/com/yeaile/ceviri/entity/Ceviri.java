@@ -67,6 +67,9 @@ public class Ceviri extends BaseEntity {
     @TableField("language")
     private Integer language;
 
+    @TableField("cevir_file_id")
+    private String cevirFileId;
+
 
     @Tolerate
     public Ceviri() {

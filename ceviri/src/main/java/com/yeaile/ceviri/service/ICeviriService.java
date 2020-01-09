@@ -6,6 +6,8 @@ import com.yeaile.common.domain.ceviri.dto.CeviriDTO;
 import com.yeaile.common.domain.ceviri.dto.CeviriQueryDTO;
 import com.yeaile.common.domain.ceviri.vo.CeviriVO;
 
+import java.io.FileNotFoundException;
+
 /**
  * <p>
  * 原文 服务类
@@ -20,5 +22,7 @@ public interface ICeviriService {
 
     IPage<CeviriVO> listCeviri(CeviriQueryDTO ceviriQueryDTO);
 
-    void saveCeviri(CeviriDTO ceviriDTO);
+    void saveCeviri(CeviriDTO ceviriDTO) throws FileNotFoundException, Exception;
+
+    CeviriVO getCevirByMetinId(String id);
 }

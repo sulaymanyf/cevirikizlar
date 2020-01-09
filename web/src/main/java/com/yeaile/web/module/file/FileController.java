@@ -1,8 +1,15 @@
 package com.yeaile.web.module.file;
+import com.google.common.base.Charsets;
+import com.yeaile.ceviri.service.ICeviriService;
+import com.yeaile.ceviri.service.IMetinService;
+import com.yeaile.common.domain.ceviri.vo.CeviriVO;
+import com.yeaile.common.domain.ceviri.vo.MetinVO;
 import com.yeaile.common.result.Result;
+import com.yeaile.common.result.ResultCode;
 import com.yeaile.common.result.StatusCode;
 import com.yeaile.common.utils.HWPFUtil;
 import com.yeaile.file.service.IFileService;
+import org.apache.commons.io.FileUtils;
 import org.apache.poi.ooxml.POIXMLDocument;
 import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
 import org.apache.poi.xwpf.model.XWPFCommentsDecorator;
@@ -25,7 +32,11 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
+import java.time.Year;
 import java.util.List;
 import java.util.stream.Stream;
 import java.util.zip.InflaterInputStream;
@@ -46,6 +57,12 @@ public class FileController {
 
     @Resource
     private IFileService fileService;
+
+    @Resource
+    private IMetinService iMetinService;
+
+    @Resource
+    private ICeviriService iCeviriService;
 
     static boolean save =true;
     static boolean  nestLists = true;
@@ -88,7 +105,7 @@ public class FileController {
     }
 
     @GetMapping(value = "v1/file/{id}")
-    public void fileUpload(HttpServletResponse response , @PathVariable(value = "id" ,required = false) String id) throws IOException, Docx4JException {
+    public void getFile(HttpServletResponse response , @PathVariable(value = "id" ,required = false) String id) throws IOException, Docx4JException {
         String path = ResourceUtils.getURL("classpath:").getPath();
         String projectPath = path.substring(0, path.indexOf("web"));
         String filePath = fileService.getPathById(id);
@@ -150,6 +167,29 @@ public class FileController {
         }
         htmlSettings = null;
         wordprocessingMLPackage = null;
+    }
+
+    @GetMapping(value = "v1/read-file/{id}")
+    public void readFile(HttpServletResponse response , @PathVariable(value = "id" ,required = false) String id) throws IOException, Docx4JException {
+        String path = ResourceUtils.getURL("classpath:").getPath();
+        String projectPath = path.substring(0, path.indexOf("web"));
+        MetinVO metinVO = iMetinService.metin(id);
+        String filePath = fileService.getPathById(metinVO.getContent());
+        FileCopyUtils.copy(new FileInputStream(projectPath+filePath),response.getOutputStream());
+    }
+
+
+    @GetMapping(value = "v1/file-ceviri/{id}")
+    public Result readFile( @PathVariable(value = "id" ,required = false) String id) throws IOException {
+        String path = ResourceUtils.getURL("classpath:").getPath();
+        String projectPath = path.substring(0, path.indexOf("web"));
+        CeviriVO  ceviriVO = iCeviriService.getCevirByMetinId(id);
+        String filePath = fileService.getPathById(ceviriVO.getCevirFileId());
+        StringBuffer stringBuffer = new StringBuffer();
+        FileUtils.readLines(new File(projectPath+filePath),"utf-8").forEach(stringBuffer::append);
+
+        return new Result(true,ResultCode.SUCCESS.getCode(),stringBuffer.toString());
+
     }
 }
 

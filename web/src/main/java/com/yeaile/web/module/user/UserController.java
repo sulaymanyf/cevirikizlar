@@ -84,8 +84,6 @@ public class UserController {
         Map<String, String> tokenMap = new HashMap<>();
         tokenMap.put("token", token);
         tokenMap.put("tokenHead", tokenHead);
-        // 测试用，TODO 待删除
-        tokenMap.put("cc", tokenHead + " " + token);
         return Rx.success(tokenMap);
 
     }
