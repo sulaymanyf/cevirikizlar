@@ -8,20 +8,36 @@ import com.yeaile.common.domain.user.dto.UserDTO;
 import com.yeaile.common.domain.user.dto.UserLoginDto;
 import com.yeaile.common.domain.user.dto.UserQueryDto;
 import com.yeaile.common.domain.user.dto.UserRegDto;
+import com.yeaile.common.domain.user.vo.RoleVO;
+import com.yeaile.common.domain.user.vo.UserAndRoleVo;
 import com.yeaile.common.domain.user.vo.UserVo;
 import com.yeaile.common.result.Result;
 import com.yeaile.common.result.StatusCode;
 import com.yeaile.common.utils.BeanUtil;
 import com.yeaile.common.utils.IdWorkerUtil;
+import com.yeaile.common.utils.JwtTokenUtil;
+import com.yeaile.user.entity.Role;
 import com.yeaile.user.entity.User;
+import com.yeaile.user.entity.UserRole;
 import com.yeaile.user.mapper.PermissionMapper;
 import com.yeaile.user.mapper.RoleMapper;
 import com.yeaile.user.mapper.UserMapper;
+import com.yeaile.user.mapper.UserRoleMapper;
 import com.yeaile.user.service.IUserService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.math.BigInteger;
+import java.util.List;
 
 
 /**
@@ -33,7 +49,8 @@ import java.math.BigInteger;
  * @since 2019-12-24
  */
 @Service
-public class UserServiceImpl implements IUserService {
+@Slf4j
+public class UserServiceImpl implements IUserService , UserDetailsService {
 
 
     @Resource
@@ -46,8 +63,17 @@ public class UserServiceImpl implements IUserService {
     private RoleMapper roleMapper;
 
     @Resource
+    private UserRoleMapper userRoleMapper;
+
+    @Resource
     private PasswordEncoder passwordEncoder;
 
+
+    @Autowired
+    private UserDetailsService userDetailsService;
+
+    @Autowired
+    JwtTokenUtil jwtTokenUtil;
 
 
     @Override
@@ -56,6 +82,7 @@ public class UserServiceImpl implements IUserService {
         // 加密
         user.setPassword(passwordEncoder.encode(userRegDto.getPassword()));
         user.setId(IdWorkerUtil.getIdStr());
+        user.setUserStatus(UserStatus.NORMAL.getCode());
         userMapper.insert(user);
         UserVo userVo = BeanUtil.copy(userMapper.selectById(user), UserVo.class);
         return userVo;
@@ -71,12 +98,22 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public Result login(UserLoginDto user) {
-        UserVo userVo = BeanUtil.copy(getUserByUserName(user.getUserName()), UserVo.class);
-        if (userVo.getUserStatus() != UserStatus.NORMAL.getCode()) {
-            return new Result(false, StatusCode.ERROR, "账户已锁定或被注销");
+    public String login(UserLoginDto user) {
+
+        String token = null;
+        try {
+            UserDetails userDetails = userDetailsService.loadUserByUsername(user.getUserName());
+            if (!passwordEncoder.matches(user.getPassword(), userDetails.getPassword())) {
+                throw new BadCredentialsException("密码不正确");
+            }
+            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails,
+                    null, userDetails.getAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            token = jwtTokenUtil.generateToken(userDetails);
+        } catch (AuthenticationException e) {
+            log.warn("登录异常:{}", e.getMessage());
         }
-        return new Result(false, StatusCode.ERROR, "登录成功", userVo);
+        return token;
     }
 
     @Override
@@ -110,5 +147,27 @@ public class UserServiceImpl implements IUserService {
     @Override
     public void deleteUserById(String id) {
         userMapper.deleteById(new BigInteger(id));
+    }
+
+
+    @Override
+    public UserAndRoleVo selectByName(String username){
+        User user = userMapper.getUserByUserName(username);
+        UserAndRoleVo userAndRoleVo  = BeanUtil.copy(user, UserAndRoleVo.class);
+        List<String> roleList = userRoleMapper.selectByUserId(user.getId());
+        List<Role> roles = roleMapper.selectBatchIds(roleList);
+        List<RoleVO> roleVOS = BeanUtil.copyList(roles, RoleVO.class);
+        userAndRoleVo.setRoles(roleVOS);
+        return userAndRoleVo;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        UserAndRoleVo user = this.selectByName(username);
+
+        if (user==null){
+            throw new UsernameNotFoundException("用户名不存在!");
+        }
+        return user;
     }
 }

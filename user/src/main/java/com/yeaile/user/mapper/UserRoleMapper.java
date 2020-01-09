@@ -4,6 +4,9 @@ package com.yeaile.user.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.yeaile.user.entity.UserRole;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * <p>
@@ -16,4 +19,5 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface UserRoleMapper extends BaseMapper<UserRole> {
 
+    List<String> selectByUserId(@Param("id") String id);
 }

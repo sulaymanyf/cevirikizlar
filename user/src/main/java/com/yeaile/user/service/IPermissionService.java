@@ -1,6 +1,11 @@
 package com.yeaile.user.service;
 
 
+import com.yeaile.common.domain.user.vo.PermissionVO;
+import com.yeaile.user.entity.Permission;
+
+import java.util.List;
+
 /**
  * <p>
  *  服务类
@@ -10,5 +15,7 @@ package com.yeaile.user.service;
  * @since 2019-12-24
  */
 public interface IPermissionService {
+
+    List<PermissionVO> getAllPermissionWithRole();
 
 }

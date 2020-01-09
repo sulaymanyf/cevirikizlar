@@ -2,10 +2,14 @@ package com.yeaile.common.domain.user.vo;
 
 
 import java.io.Serializable;
+import java.util.List;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+
+
 
 /**
  * <p>
@@ -69,6 +73,8 @@ public class PermissionVO implements Serializable {
      private Integer status;
      private String code;
 
+	private List<PermissionVO> children;
 
+	private List<RoleVO> roles;
 
 }

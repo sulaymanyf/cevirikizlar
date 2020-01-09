@@ -5,10 +5,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
 import lombok.experimental.Tolerate;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -21,7 +26,7 @@ import java.util.List;
 @Data
 @Builder
 @ToString
-public class UserVo implements Serializable {
+public class UserAndRoleVo  implements UserDetails, Serializable {
     private static final long serialVersionUID = -62051102850076259L;
 
 
@@ -131,9 +136,43 @@ public class UserVo implements Serializable {
      */
     private Integer followcount;
 
-    List<RoleVO> roleVOS;
+    private List<RoleVO> roles;
 
     @Tolerate
-    public UserVo() {
+    public UserAndRoleVo() {
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<SimpleGrantedAuthority> authorities = new ArrayList<>(roles.size());
+        for (RoleVO role : roles) {
+            authorities.add(new SimpleGrantedAuthority(role.getRoleName()));
+        }
+        return authorities;
+    }
+
+    @Override
+    public String getUsername() {
+        return userName;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }

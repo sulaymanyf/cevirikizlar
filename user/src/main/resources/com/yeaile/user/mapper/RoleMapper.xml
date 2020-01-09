@@ -14,12 +14,11 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
- id, 
- role_name, 
- description, 
- update_time, 
- create_time, 
- delete_flag
-
+         id,
+         role_name,
+         description,
+         update_time,
+         create_time,
+         delete_flag
     </sql>
 </mapper>

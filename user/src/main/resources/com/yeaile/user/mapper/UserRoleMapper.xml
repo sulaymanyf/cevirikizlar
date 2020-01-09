@@ -20,4 +20,9 @@
  delete_flag
 
     </sql>
+    <select id="selectByUserId" resultType="java.lang.String">
+        select role_id
+        from tb_user_role where user_id = #{id}
+    </select>
+
 </mapper>

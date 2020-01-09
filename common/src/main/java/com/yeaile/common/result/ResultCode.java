@@ -2,6 +2,8 @@ package com.yeaile.common.result;
 
 public enum ResultCode implements IResultCode {
     SUCCESS(10000, "成功"),
+    FAILURE(4000, "失败"),
+    ERROR(20000, "错误"),
     PARAM_IS_INVALID(10201, "参数无效"),
     PARAM_IS_BLANK(10202, "参数为空"),
     PARAM_TYPE_BIND_ERROR(10203, "参数类型错误"),

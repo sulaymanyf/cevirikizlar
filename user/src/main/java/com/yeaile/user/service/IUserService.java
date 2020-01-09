@@ -6,6 +6,7 @@ import com.yeaile.common.domain.user.dto.UserDTO;
 import com.yeaile.common.domain.user.dto.UserLoginDto;
 import com.yeaile.common.domain.user.dto.UserQueryDto;
 import com.yeaile.common.domain.user.dto.UserRegDto;
+import com.yeaile.common.domain.user.vo.UserAndRoleVo;
 import com.yeaile.common.domain.user.vo.UserVo;
 import com.yeaile.common.result.Result;
 
@@ -22,7 +23,7 @@ public interface IUserService {
 
     UserVo register(UserRegDto user);
 
-    Result login(UserLoginDto user);
+    String login(UserLoginDto user);
 
     IPage<UserVo> userList(UserQueryDto userQueryDto);
 
@@ -33,5 +34,7 @@ public interface IUserService {
     void updateUser(UserDTO userDto);
 
     void deleteUserById(String id);
+
+    UserAndRoleVo selectByName(String username);
 
 }

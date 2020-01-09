@@ -53,4 +53,9 @@ public class Result {
         this.data = data;
     }
 
+    public Result(boolean flag, String message) {
+        this.flag = flag;
+        this.message = message;
+    }
+
 }

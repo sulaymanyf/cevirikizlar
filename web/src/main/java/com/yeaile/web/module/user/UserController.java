@@ -8,11 +8,15 @@ import com.yeaile.common.domain.user.dto.UserLoginDto;
 import com.yeaile.common.domain.user.dto.UserQueryDto;
 import com.yeaile.common.domain.user.dto.UserRegDto;
 import com.yeaile.common.domain.user.vo.UserVo;
+import com.yeaile.common.result.R;
 import com.yeaile.common.result.Result;
+import com.yeaile.common.result.Rx;
 import com.yeaile.common.result.StatusCode;
+import com.yeaile.common.utils.JwtTokenUtil;
 import com.yeaile.user.service.IUserService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +27,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
-
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -46,7 +51,10 @@ public class UserController {
     @Autowired
     private HttpServletRequest request;
 
-
+    @Value("${jwt.tokenHeader}")
+    private String tokenHeader;
+    @Value("${jwt.tokenHead}")
+    private String tokenHead;
     /**
      * @author yefan
      * @date 2019/12/4
@@ -62,14 +70,23 @@ public class UserController {
         return new Result(true, StatusCode.OK,"注册成功");
     }
 
-    @RequestMapping(value = "v1/login/{code}",method = RequestMethod.POST)
-    public Result login(@PathVariable String code, @RequestBody UserLoginDto user){
+    @RequestMapping(value = "v1/login",method = RequestMethod.POST)
+    public R login(@RequestBody UserLoginDto user){
         String codeIn = (String) request.getSession().getAttribute("vrifyCode");
         request.getSession().removeAttribute("verificationCode");
-        if (StringUtils.isEmpty(codeIn) || !codeIn.equals(code)) {
-            return new Result(false,StatusCode.ERROR,"验证码错误，或已失效");
+        if (StringUtils.isEmpty(codeIn) || !codeIn.equals(user.getCode())) {
+            return  Rx.error("验证码错误，或已失效");
         }
-        return iUserService.login(user);
+        String token = iUserService.login(user);
+        if (token == null) {
+            return Rx.error("用户名或密码错误");
+        }
+        Map<String, String> tokenMap = new HashMap<>();
+        tokenMap.put("token", token);
+        tokenMap.put("tokenHead", tokenHead);
+        // 测试用，TODO 待删除
+        tokenMap.put("cc", tokenHead + " " + token);
+        return Rx.success(tokenMap);
 
     }
 

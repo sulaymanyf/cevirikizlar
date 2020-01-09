@@ -14,7 +14,8 @@ public enum UserStatus implements IResultCode {
 
     LOCKED(0,"账号锁定"),
     NORMAL(1,"normal"),
-    UNSUBSCRIBE(2,"unsubscribe");
+    NEEDS_REVIEW(2,"Needs review"),
+    EXPIRED(3,"Expired");
 
     /**
      * 编码

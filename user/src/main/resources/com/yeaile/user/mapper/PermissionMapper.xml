@@ -4,26 +4,26 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.yeaile.user.entity.Permission">
-        <id column="id" property="id" />
-        <result column="description" property="description" />
-        <result column="per_name" property="perName" />
-        <result column="type" property="type" />
-        <result column="pid" property="pid" />
-        <result column="level" property="level" />
-        <result column="method" property="method" />
-        <result column="url" property="url" />
-        <result column="icon" property="icon" />
-        <result column="sort" property="sort" />
-        <result column="status" property="status" />
-        <result column="code" property="code" />
-        <result column="update_time" property="updateTime" />
-        <result column="create_time" property="createTime" />
-        <result column="delete_flag" property="deleteFlag" />
+        <id column="id" property="id"/>
+        <result column="description" property="description"/>
+        <result column="per_name" property="perName"/>
+        <result column="type" property="type"/>
+        <result column="pid" property="pid"/>
+        <result column="level" property="level"/>
+        <result column="method" property="method"/>
+        <result column="url" property="url"/>
+        <result column="icon" property="icon"/>
+        <result column="sort" property="sort"/>
+        <result column="status" property="status"/>
+        <result column="code" property="code"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="create_time" property="createTime"/>
+        <result column="delete_flag" property="deleteFlag"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
- id, 
+        id,
  description, 
  per_name, 
  type, 
@@ -40,4 +40,25 @@
  delete_flag
 
     </sql>
+    <select id="getAllPermissionWithRole" resultType="com.yeaile.user.entity.Permission">
+        select tp.id,
+               tp.status,
+               tp.code,
+               tp.description,
+               tp.icon,
+               tp.level,
+               tp.method,
+               tp.pid,
+               tp.sort,
+               tp.url,
+               tp.type,
+               tr.name_zh,
+               tr.role_name,
+               tr.id as role_id
+        from tb_permission as tp,
+             tb_role_permission as trp,
+             tb_role as tr
+        where tp.id = trp.permission_id
+          and trp.role_id = tr.id
+    </select>
 </mapper>

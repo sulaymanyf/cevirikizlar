@@ -1,11 +1,16 @@
 package com.yeaile.user.service.impl;
 
 
+import com.yeaile.common.domain.user.vo.PermissionVO;
+import com.yeaile.user.entity.Permission;
 import com.yeaile.user.mapper.PermissionMapper;
 import com.yeaile.user.service.IPermissionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+import java.util.List;
 
 
 /**
@@ -20,4 +25,13 @@ import org.springframework.stereotype.Service;
 public class PermissionServiceImpl implements IPermissionService {
 
 
+    @Resource
+    private PermissionMapper permissionMapper;
+
+    @Override
+    @Cacheable
+    public List<PermissionVO> getAllPermissionWithRole() {
+        permissionMapper.getAllPermissionWithRole();
+        return null;
+    }
 }
