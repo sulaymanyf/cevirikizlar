@@ -15,6 +15,7 @@ import com.yeaile.common.result.StatusCode;
 import com.yeaile.common.utils.JwtTokenUtil;
 import com.yeaile.user.service.IUserService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.StringUtils;
@@ -70,7 +71,8 @@ public class UserController {
         return new Result(true, StatusCode.OK,"注册成功");
     }
 
-    @RequestMapping(value = "v1/login",method = RequestMethod.POST)
+    @ApiOperation(value = "登录")
+    @RequestMapping(name = "登录" ,value = "v1/login",method = RequestMethod.POST)
     public R login(@RequestBody UserLoginDto user){
         String codeIn = (String) request.getSession().getAttribute("vrifyCode");
         request.getSession().removeAttribute("verificationCode");

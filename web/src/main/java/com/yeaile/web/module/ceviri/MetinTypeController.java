@@ -26,7 +26,7 @@ import java.util.List;
  */
 
 @RestController
-@RequestMapping("/api/ceviri-kizlar/")
+@RequestMapping("/api/ceviri-kizlar/metinType")
 @Api(tags = "文章类型管理")
 public class MetinTypeController {
 

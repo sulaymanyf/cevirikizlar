@@ -22,7 +22,7 @@ import java.io.ByteArrayOutputStream;
  * @return
  **/
 @RestController
-@RequestMapping("/api/ceviri-kizlar/")
+@RequestMapping("/api/ceviri-kizlar/code")
 @Api(tags = "验证码")
 public class CodeController {
 

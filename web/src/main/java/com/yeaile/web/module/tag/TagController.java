@@ -27,7 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 
 @RestController
-@RequestMapping("/api/ceviri-kizlar/")
+@RequestMapping("/api/ceviri-kizlar/tag")
 @Api(tags = "标签管理")
 public class TagController {
 

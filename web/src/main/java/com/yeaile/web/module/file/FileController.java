@@ -52,7 +52,7 @@ import java.util.zip.InflaterInputStream;
  */
 
 @RestController
-@RequestMapping("/api/ceviri-kizlar/")
+@RequestMapping("/api/ceviri-kizlar/file")
 public class FileController {
 
     @Resource

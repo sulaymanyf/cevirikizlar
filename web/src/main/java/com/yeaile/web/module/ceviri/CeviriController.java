@@ -23,7 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 
 @RestController
-@RequestMapping("/api/ceviri-kizlar/")
+@RequestMapping("/api/ceviri-kizlar/ceviri")
 @Api(tags = "译文管理")
 public class CeviriController {
 

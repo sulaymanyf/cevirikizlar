@@ -33,7 +33,7 @@ import java.io.IOException;
  */
 
 @RestController
-@RequestMapping("/api/ceviri-kizlar/")
+@RequestMapping("/api/ceviri-kizlar/metin")
 @Api(tags = "原文管理")
 public class MetinController {
 
