@@ -41,7 +41,7 @@ public class RbacAuthorityService {
             for (GrantedAuthority authority : authorities) {
                 if ("ROLE_admin".equalsIgnoreCase(authority.getAuthority())){
                     hasPermission = true;
-                    break;
+                    return hasPermission;
                 }
             }
             List<String> perUrls =  iPermissionService.getAllPathsByUserName(username);

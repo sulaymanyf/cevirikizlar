@@ -4,6 +4,7 @@ package com.yeaile.common.domain.user.vo;
 import java.io.Serializable;
 import java.util.List;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
@@ -38,7 +39,7 @@ public class PermissionVO implements Serializable {
 	/**
 	 * 权限名称
 	 */
-     private String perName;
+     private String name;
 	/**
 	 * 权限类型 1为菜单 2为功能 3为API
 	 */
@@ -73,6 +74,7 @@ public class PermissionVO implements Serializable {
      private Integer status;
      private String code;
 
+     private String path;
 	private List<PermissionVO> children;
 
 	private List<RoleVO> roles;

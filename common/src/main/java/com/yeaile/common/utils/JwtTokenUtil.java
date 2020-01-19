@@ -4,6 +4,7 @@ package com.yeaile.common.utils;
 import cn.hutool.core.date.DateUtil;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.slf4j.Slf4j;
@@ -41,8 +42,9 @@ import java.util.Map;
 public class JwtTokenUtil {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JwtTokenUtil.class);
-    private static final String CLAIM_KEY_USERNAME = "sub";
-    private static final String CLAIM_KEY_CREATED = "created";
+    private static final String CLAIM_KEY_USERNAME = "userName";
+    private static final String CLAIM_KEY_USERID = "userId";
+    private static final String CLAIM_KEY_CREATED = "reated";
     @Value("${jwt.token.secret}")
     private String secret;
     @Value("${jwt.token.expiration}")
@@ -60,10 +62,11 @@ public class JwtTokenUtil {
                 .compact();
     }
 
+
     /**
      * 从token中获取JWT中的负载
      */
-    private Claims getClaimsFromToken(String token) {
+    public Claims getClaimsFromToken(String token) {
         Claims claims = null;
         try {
             claims = Jwts.parser()
@@ -127,9 +130,10 @@ public class JwtTokenUtil {
     /**
      * 根据用户信息生成token
      */
-    public String generateToken(UserDetails userDetails) {
+    public String generateToken(String userName, String userId) {
         Map<String, Object> claims = new HashMap<>();
-        claims.put(CLAIM_KEY_USERNAME, userDetails.getUsername());
+        claims.put(CLAIM_KEY_USERNAME, userName);
+        claims.put(CLAIM_KEY_USERID, userId);
         claims.put(CLAIM_KEY_CREATED, new Date());
         return generateToken(claims);
     }

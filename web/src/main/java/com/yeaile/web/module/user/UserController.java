@@ -7,6 +7,8 @@ import com.yeaile.common.domain.user.dto.UserDTO;
 import com.yeaile.common.domain.user.dto.UserLoginDto;
 import com.yeaile.common.domain.user.dto.UserQueryDto;
 import com.yeaile.common.domain.user.dto.UserRegDto;
+import com.yeaile.common.domain.user.vo.MenuNodeVO;
+import com.yeaile.common.domain.user.vo.PermissionVO;
 import com.yeaile.common.domain.user.vo.UserVo;
 import com.yeaile.common.result.R;
 import com.yeaile.common.result.Result;
@@ -14,6 +16,7 @@ import com.yeaile.common.result.Rx;
 import com.yeaile.common.result.StatusCode;
 import com.yeaile.common.utils.JwtTokenUtil;
 import com.yeaile.user.service.IUserService;
+import com.yeaile.web.module.BaseController;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +32,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -42,9 +46,9 @@ import java.util.Map;
  */
 
 @RestController
-@RequestMapping("/api/ceviri-kizlar/user/")
+@RequestMapping(name = "用户管理",value = "/api/ceviri-kizlar/user")
 @Api(tags = "用户管理")
-public class UserController {
+public class UserController extends BaseController {
 
     @Autowired
     private IUserService iUserService;
@@ -65,37 +69,42 @@ public class UserController {
      * @修改人和其他信息
      **/
 
-    @RequestMapping(value = "v1/register/{code}",method = RequestMethod.POST)
+    @RequestMapping(name = "注册",value = "v1/user/register/{code}",method = RequestMethod.POST)
     public Result register(@PathVariable String code, @RequestBody UserRegDto user){
         iUserService.register(user);
         return new Result(true, StatusCode.OK,"注册成功");
     }
 
     @ApiOperation(value = "登录")
-    @RequestMapping(name = "登录" ,value = "v1/login",method = RequestMethod.POST)
-    public R login(@RequestBody UserLoginDto user){
+    @RequestMapping(name = "登录" ,value = "v1/user/login",method = RequestMethod.POST)
+    public Result login(@RequestBody UserLoginDto user){
         String codeIn = (String) request.getSession().getAttribute("vrifyCode");
         request.getSession().removeAttribute("verificationCode");
-        if (StringUtils.isEmpty(codeIn) || !codeIn.equals(user.getCode())) {
-            return  Rx.error("验证码错误，或已失效");
+        if (StringUtils.isEmpty(codeIn) || !codeIn.equals(user.getCaptcha())) {
+            return  new Result(false, StatusCode.ERROR,"验证码错误，或已失效");
         }
         String token = iUserService.login(user);
         if (token == null) {
-            return Rx.error("用户名或密码错误");
+            return new Result(false, StatusCode.ERROR,"用户名或密码错误");
         }
         Map<String, String> tokenMap = new HashMap<>();
-        tokenMap.put("token", token);
-        tokenMap.put("tokenHead", tokenHead);
-        return Rx.success(tokenMap);
+        tokenMap.put("token", tokenHead+" "+token);
+        return new Result(true, StatusCode.OK,tokenMap);
 
+    }
+
+    @ApiOperation(value = "获取菜用户单")
+    @RequestMapping(name = "获取菜用户单" ,value = "v1/user/menu",method = RequestMethod.GET)
+    public Result getMenu(){
+        List<MenuNodeVO> MenuList = iUserService.getUserMenuByUserId(UserId);
+        return new Result(true, StatusCode.OK,MenuList);
     }
 
 
 
 
 
-
-    @RequestMapping(value = "/v1/info", method = RequestMethod.GET)
+    @RequestMapping(name = "获取用户信息",value = "/v1/user/info", method = RequestMethod.GET)
     public Result getInfo() {
 
         return new Result(true, StatusCode.OK, "");
@@ -106,7 +115,7 @@ public class UserController {
      * @param userQueryDto
      * @return
      */
-    @RequestMapping(value = "/v1/userlist", method = RequestMethod.POST)
+    @RequestMapping(name = "获取用户列表",value = "/v1/user/userlist", method = RequestMethod.POST)
     public Result userList(@RequestBody UserQueryDto userQueryDto) {
         IPage<UserVo> userVoIPage = iUserService.userList(userQueryDto);
         return new Result(true, StatusCode.OK, userVoIPage);
@@ -121,7 +130,7 @@ public class UserController {
      * @return
      */
 
-    @RequestMapping(value = "/v1/{id}", method = RequestMethod.GET)
+    @RequestMapping(name = "获取个人信息",value = "/v1/user/{id}", method = RequestMethod.GET)
     public Result findById(@PathVariable String id) {
         return new Result(true, StatusCode.OK, "查询成功", iUserService.findById(id));
     }
@@ -152,7 +161,7 @@ public class UserController {
      *                另外，我们增加了带有@PostAuthorize注解的findById()方法。通过@PostAuthorize注解 method(User object)的返回值在Spring表达式语言中可以通过returnObject 来使用。
      *                在例子中我们确保登录用户只能获取他自己的用户对象。
      */
-    @RequestMapping(value = "/v1" ,method = RequestMethod.POST)
+    @RequestMapping(name = "新增用户",value = "/v1/user" ,method = RequestMethod.POST)
     public Result add(@RequestBody UserDTO userDto) {
         iUserService.addUser(userDto);
         return new Result(true, StatusCode.OK, "增加成功");
@@ -163,7 +172,7 @@ public class UserController {
      *
      * @param userDto
      */
-    @RequestMapping(value = "/v1/{id}", method = RequestMethod.PUT)
+    @RequestMapping(name = "修改",value = "/v1/user/{id}", method = RequestMethod.PUT)
     public Result update(@RequestBody UserDTO userDto, @PathVariable String id) {
         userDto.setId(id);
         iUserService.updateUser(userDto);
@@ -175,7 +184,7 @@ public class UserController {
      *
      * @param id
      */
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(name = "删除",value = "/v1/user/{id}", method = RequestMethod.DELETE)
     public Result delete(@PathVariable String id) {
         iUserService.deleteUserById(id);
         return new Result(true, StatusCode.OK, "删除成功");
@@ -186,7 +195,7 @@ public class UserController {
      *
      * @param
      */
-    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    @RequestMapping(name = "退出",value = "/v1/user/logout", method = RequestMethod.GET)
     public Result logout() {
 
         return new Result(true, StatusCode.OK, "删除成功");

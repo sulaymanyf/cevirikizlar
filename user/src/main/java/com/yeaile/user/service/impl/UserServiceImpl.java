@@ -1,16 +1,17 @@
 package com.yeaile.user.service.impl;
 
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yeaile.common.constant.UserStatus;
+import com.yeaile.common.domain.ceviri.vo.MetinTypeNodeVO;
 import com.yeaile.common.domain.user.dto.UserDTO;
 import com.yeaile.common.domain.user.dto.UserLoginDto;
 import com.yeaile.common.domain.user.dto.UserQueryDto;
 import com.yeaile.common.domain.user.dto.UserRegDto;
-import com.yeaile.common.domain.user.vo.RoleVO;
-import com.yeaile.common.domain.user.vo.UserAndRoleVo;
-import com.yeaile.common.domain.user.vo.UserVo;
+import com.yeaile.common.domain.user.vo.*;
 import com.yeaile.common.result.Result;
 import com.yeaile.common.result.StatusCode;
 import com.yeaile.common.utils.*;
@@ -37,7 +38,9 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -124,7 +127,8 @@ public class UserServiceImpl implements IUserService, UserDetailsService {
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails,
                     null, userDetails.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            token = jwtTokenUtil.generateToken(userDetails);
+            User byUserName = this.getUserByUserName(user.getUserName());
+            token = jwtTokenUtil.generateToken(userDetails.getUsername(),byUserName.getId());
         } catch (AuthenticationException e) {
             log.warn("登录异常:{}", e.getMessage());
         }
@@ -176,6 +180,8 @@ public class UserServiceImpl implements IUserService, UserDetailsService {
         return userAndRoleVo;
     }
 
+
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserAndRoleVo user = this.selectByName(username);
@@ -184,5 +190,39 @@ public class UserServiceImpl implements IUserService, UserDetailsService {
             throw new UsernameNotFoundException("用户名不存在!");
         }
         return user;
+    }
+
+
+    @Override
+    public List<MenuNodeVO> getUserMenuByUserId(String userId) {
+        List<PermissionVO> menuList = permissionMapper.getUserMenuByUserId(userId);
+        ArrayList<MenuNodeVO> menuNodeVOS = new ArrayList<>();
+        for (PermissionVO menuNodeVO : menuList) {
+            if (menuNodeVO!=null){
+                menuNodeVOS.add(new MenuNodeVO(menuNodeVO.getId(),menuNodeVO.getPid(),menuNodeVO.getName(),menuNodeVO.getIcon(),menuNodeVO.getPath(),menuNodeVO.getSort(),menuNodeVO.getCode()));
+            }
+        }
+        List<MenuNodeVO> menuTree = ListToTree(menuNodeVOS);
+        return menuTree;
+    }
+
+
+    public static List<MenuNodeVO> ListToTree(ArrayList<MenuNodeVO> list){
+
+        Map<String, MenuNodeVO> mapTmp = new HashMap<>();
+        for (MenuNodeVO current : list) {
+            mapTmp.put(current.getId(), current);
+        }
+        System.out.println(mapTmp);
+        List<MenuNodeVO> finalList = new ArrayList<>();
+
+        mapTmp.forEach((k, v) -> {
+            if("".equals(v.getPid())|| "0".equals(v.getPid())) {
+                finalList.add(v);
+            } else {
+                mapTmp.get(v.getPid()).getChildren().add(v);
+            }
+        });
+        return finalList;
     }
 }

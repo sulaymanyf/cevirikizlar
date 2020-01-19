@@ -2,6 +2,7 @@ package com.yeaile.common.domain.user.vo;
 
 
 import java.io.Serializable;
+import java.util.List;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -36,6 +37,10 @@ public class RoleVO implements Serializable {
 	 * 说明
 	 */
      private String description;
+
+     private List<PermissionVO> permissionVOS;
+
+     private List<MenuVO> menuVOS;
 
 
 

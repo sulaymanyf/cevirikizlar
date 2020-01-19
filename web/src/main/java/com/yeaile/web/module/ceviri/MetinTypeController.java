@@ -26,34 +26,11 @@ import java.util.List;
  */
 
 @RestController
-@RequestMapping("/api/ceviri-kizlar/metinType")
+@RequestMapping(name = "文章类型管理",value = "/api/ceviri-kizlar/metinType")
 @Api(tags = "文章类型管理")
 public class MetinTypeController {
 
-    @Autowired
-    private IMetinTypeService iMetinTypeService;
 
-    @ApiOperation("修改或添加文章类型")
-    @PutMapping(value = "v1/metinType")
-    public Result addOrUpdateMetinType(@RequestBody MetinTypeDTO metinTypeDTO){
-        iMetinTypeService.addOrUpdateMetinType(metinTypeDTO);
-        return new Result(true, StatusCode.OK,"basrildi");
-    }
-
-    @ApiOperation("获取单个文章类型")
-    @GetMapping(value = "v1/metinType/{id}")
-    public Result MetinType(@PathVariable String id){
-        MetinTypeVO metinTypeVO =  iMetinTypeService.MetinType(id);
-        return new Result(true, StatusCode.OK,metinTypeVO);
-    }
-
-
-    @ApiOperation("获取文章类型树形结构")
-    @GetMapping(value = "v1/metinTypeTree")
-    public Result MetinTypeTree(){
-        List<MetinTypeNodeVO> metinTypeVO =  iMetinTypeService.MetinTypeTree();
-        return new Result(true, StatusCode.OK,metinTypeVO);
-    }
 
 
 }

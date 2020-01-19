@@ -24,7 +24,7 @@ public class UserLoginDto implements Serializable {
 
     private String userName;
     private String password;
-    private String code;
+    private String captcha;
 
     @Tolerate
     public UserLoginDto() {

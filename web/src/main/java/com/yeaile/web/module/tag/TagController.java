@@ -27,7 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 
 @RestController
-@RequestMapping("/api/ceviri-kizlar/tag")
+@RequestMapping(name = "标签管理", value = "/api/ceviri-kizlar/tag")
 @Api(tags = "标签管理")
 public class TagController {
 
@@ -36,7 +36,7 @@ public class TagController {
 
 
     @ApiOperation("获取单个tag")
-    @GetMapping(value = "v1/tag/{id}")
+    @GetMapping(name = "获取单个tag",value = "v1/tag/{id}")
     public Result tag(@PathVariable String id){
         TagVo tagVo =  tagService.tag(id);
         return new Result(true, StatusCode.OK,tagVo);
@@ -44,7 +44,7 @@ public class TagController {
 
 
     @ApiOperation("分页获取tag")
-    @GetMapping(value = "v1/tag/{page}/{size}")
+    @GetMapping(name = "分页获取tag",value = "v1/tag/{page}/{size}")
     public Result listTag(@PathVariable  int page, @PathVariable int size){
         IPage<TagVo> tagVoIPage =  tagService.listTag();
         return new Result(true, StatusCode.OK,tagVoIPage);
@@ -53,22 +53,22 @@ public class TagController {
 
 
     @ApiOperation("新增")
-    @PostMapping(value = "v1/tag")
+    @PostMapping(name = "新增",value = "v1/tag")
     public Result addTag(@RequestBody TagDTO tagDTO){
         tagService.tag(tagDTO);
         return new Result(true, StatusCode.OK,"sussess");
     }
 
-    @ApiOperation("新增")
-    @PutMapping(value = "v1/tag")
+    @ApiOperation("修改")
+    @PutMapping(name = "修改",value = "v1/tag")
     public Result UpdateTag(@RequestBody TagDTO tagDTO){
         tagService.UpdateTag(tagDTO);
         return new Result(true, StatusCode.OK,"sussess");
     }
 
 
-    @ApiOperation("新增")
-    @DeleteMapping(value = "v1/tag/{id}")
+    @ApiOperation("删除")
+    @DeleteMapping(name = "删除",value = "v1/tag/{id}")
     public Result deleteTag(@PathVariable String id){
         tagService.deleteTag(id);
         return new Result(true, StatusCode.OK,"sussess");

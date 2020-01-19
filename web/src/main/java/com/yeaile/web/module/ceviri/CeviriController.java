@@ -23,7 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 
 @RestController
-@RequestMapping("/api/ceviri-kizlar/ceviri")
+@RequestMapping(name = "译文管理", value = "/api/ceviri-kizlar/ceviri")
 @Api(tags = "译文管理")
 public class CeviriController {
 
@@ -32,7 +32,7 @@ public class CeviriController {
     private ICeviriService iCeviriService;
 
     @ApiOperation("开始翻译译文")
-    @GetMapping(value = "v1/ceviri/{id}")
+    @GetMapping(name = "开始翻译译文",value = "v1/ceviri/{id}")
     public Result ceviri(@PathVariable String id){
         CeviriVO ceviriVO =  iCeviriService.cevir(id);
         return new Result(true, StatusCode.OK,ceviriVO);
@@ -40,7 +40,7 @@ public class CeviriController {
 
 
     @ApiOperation("分页获取译文")
-    @PostMapping(value = "v1/ceviri")
+    @PostMapping(name = "分页获取译文",value = "v1/ceviri")
     public Result listCeviri(@RequestBody CeviriQueryDTO ceviriQueryDTO){
         IPage<CeviriVO>  ceviriVOIPage =  iCeviriService.listCeviri(ceviriQueryDTO);
         return new Result(true, StatusCode.OK,ceviriVOIPage);
@@ -49,15 +49,22 @@ public class CeviriController {
 
 
     @ApiOperation("译文操作")
-    @GetMapping(value = "v1/ceviri/{id}/{active}")
+    @GetMapping(name = "译文操作",value = "v1/ceviri/{id}/{active}")
     public Result saveCeviri(@PathVariable String id, @PathVariable String active){
         return new Result(true, StatusCode.OK,"sussess");
     }
 
 
     @ApiOperation("译文保存")
-    @PutMapping(value = "v1/ceviri")
+    @PutMapping(name = "译文保存",value = "v1/ceviri")
     public Result addCeviri(@RequestBody CeviriDTO ceviriDTO) throws Exception {
+        iCeviriService.saveCeviri(ceviriDTO);
+        return new Result(true, StatusCode.OK,"Kaydedildi.");
+    }
+
+    @ApiOperation("测试")
+    @PutMapping(name = "测试",value = "v1/ceviri/sda")
+    public Result test(@RequestBody CeviriDTO ceviriDTO) throws Exception {
         iCeviriService.saveCeviri(ceviriDTO);
         return new Result(true, StatusCode.OK,"Kaydedildi.");
     }

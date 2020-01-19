@@ -6,9 +6,13 @@ import com.yeaile.common.domain.user.dto.UserDTO;
 import com.yeaile.common.domain.user.dto.UserLoginDto;
 import com.yeaile.common.domain.user.dto.UserQueryDto;
 import com.yeaile.common.domain.user.dto.UserRegDto;
+import com.yeaile.common.domain.user.vo.MenuNodeVO;
+import com.yeaile.common.domain.user.vo.PermissionVO;
 import com.yeaile.common.domain.user.vo.UserAndRoleVo;
 import com.yeaile.common.domain.user.vo.UserVo;
 import com.yeaile.common.result.Result;
+
+import java.util.List;
 
 /**
  * <p>
@@ -37,4 +41,5 @@ public interface IUserService {
 
     UserAndRoleVo selectByName(String username);
 
+    List<MenuNodeVO> getUserMenuByUserId(String userId);
 }

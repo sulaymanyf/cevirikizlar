@@ -20,7 +20,7 @@ import java.util.List;
  * @Created by SulaymanYf
  */
 @RestController
-@RequestMapping("/api/ceviri-kizlar/sozluk")
+@RequestMapping(name = "字典查询",value = "/api/ceviri-kizlar/sozluk")
 @Api(tags = "字典查询")
 public class SozlukController {
 
@@ -28,7 +28,7 @@ public class SozlukController {
     private IEngSozlukService iEngSozlukService;
 
     @ApiOperation("关键字搜素")
-    @GetMapping(value = "/v1/en/list/{keyword}")
+    @GetMapping(name = "关键字搜素",value = "/v1/sozluk/en/list/{keyword}")
     public Result getWordList(@PathVariable String keyword){
         List<String> wordList = iEngSozlukService.getWordList(keyword);
         return new Result(true, StatusCode.OK,wordList);
@@ -36,7 +36,7 @@ public class SozlukController {
 
 
     @ApiOperation("查询单词")
-    @GetMapping(value = "/v1/en/{keyword}")
+    @GetMapping(name = "查询单词",value = "/v1/sozluk/en/{keyword}")
     public Result getWorTranslate(@PathVariable String keyword){
         EngSozVo engSozVo = iEngSozlukService.getWorTranslate(keyword);
         System.out.println(engSozVo);

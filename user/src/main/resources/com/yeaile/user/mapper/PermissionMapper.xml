@@ -6,12 +6,13 @@
     <resultMap id="BaseResultMap" type="com.yeaile.user.entity.Permission">
         <id column="id" property="id"/>
         <result column="description" property="description"/>
-        <result column="per_name" property="perName"/>
+        <result column="name" property="name"/>
         <result column="type" property="type"/>
         <result column="pid" property="pid"/>
         <result column="level" property="level"/>
         <result column="method" property="method"/>
         <result column="url" property="url"/>
+        <result column="path" property="path"/>
         <result column="icon" property="icon"/>
         <result column="sort" property="sort"/>
         <result column="status" property="status"/>
@@ -25,7 +26,7 @@
     <sql id="Base_Column_List">
         id,
  description, 
- per_name, 
+ name,
  type, 
  pid, 
  level, 
@@ -34,7 +35,8 @@
  icon, 
  sort, 
  status, 
- code, 
+ code,
+ path,
  update_time, 
  create_time, 
  delete_flag
@@ -69,5 +71,49 @@
                  left join tb_permission tp on tp.id = trp.permission_id
         where user_id = (select id from tb_user where user_name = #{username})
     </select>
+    <select id="findAll" resultType="com.yeaile.user.entity.Permission">
+       select  url ,method from tb_permission group by url,method
+    </select>
+    <select id="findPermissionByUrl" resultType="com.yeaile.user.entity.Permission">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_permission where url = #{url}
+    </select>
+    <select id="getAllPathsByUserNameAndMethod" resultType="com.yeaile.user.entity.Permission">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_permission where url like concat('%', #{url}, '%') and method ="GET" and pid !=0
+    </select>
+    <select id="getPidByUrl" resultType="java.lang.String">
+        select id from tb_permission where url like concat('%', #{url}, '%')  and pid =0
+    </select>
+    <select id="getMainMenu" resultType="com.yeaile.user.entity.Permission">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_permission where pid = 0
+    </select>
+
+
+    <select id="selectListAll" resultType="com.yeaile.common.domain.user.vo.PermissionAllVO">
+          select id, description, name as menu_name, icon, sort , url from tb_permission where pid=0;
+    </select>
+    <select id="getSonPermis" resultType="java.lang.String">
+        select  name from tb_permission where pid =#{key}
+    </select>
+    <select id="selectByPid" resultType="com.yeaile.common.domain.user.vo.PermissionVO">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_permission where pid = #{id}
+    </select>
+    <select id="getUserMenuByUserId" resultType="com.yeaile.common.domain.user.vo.PermissionVO">
+        select * from tb_permission where type=1
+    </select>
+    <select id="selectPermissionByRoleId" resultType="com.yeaile.user.entity.Permission">
+        select tp.id, tp.url, tp.name, tp.description, tp.code,tp.pid
+        from tb_role_permission as trp
+                 left join tb_permission as tp on trp.permission_id = tp.id and tp.delete_flag = 0 and tp.delete_flag = 0
+        where trp.role_id = #{id}
+</select>
+
 
 </mapper>

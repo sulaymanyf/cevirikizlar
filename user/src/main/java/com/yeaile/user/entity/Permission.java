@@ -36,8 +36,8 @@ public class Permission extends BaseEntity {
     /**
      * 权限名称
      */
-    @TableField("per_name")
-    private String perName;
+    @TableField("name")
+    private String name;
 
     /**
      * 权限类型 1为菜单 2为功能 3为API
@@ -84,9 +84,12 @@ public class Permission extends BaseEntity {
     @TableField("code")
     private String code;
 
-    @TableField("status")
-    private String status;
 
+    @TableField("status")
+    private Integer status;
+
+    @TableField("path")
+    private String path;
 
     @Tolerate
     public Permission() {

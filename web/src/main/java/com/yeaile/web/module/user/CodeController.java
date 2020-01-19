@@ -22,7 +22,7 @@ import java.io.ByteArrayOutputStream;
  * @return
  **/
 @RestController
-@RequestMapping("/api/ceviri-kizlar/code")
+@RequestMapping(name = "验证码",value = "/api/ceviri-kizlar/code")
 @Api(tags = "验证码")
 public class CodeController {
 
@@ -32,7 +32,7 @@ public class CodeController {
     @Autowired
     private HttpServletRequest request;
 
-    @RequestMapping(value = "v1/code",method = RequestMethod.GET)
+    @RequestMapping(name = "获取验证码",value = "v1/code",method = RequestMethod.GET)
     public void defaultKaptcha(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws Exception{
         byte[] captchaChallengeAsJpeg = null;
         ByteArrayOutputStream jpegOutputStream = new ByteArrayOutputStream();

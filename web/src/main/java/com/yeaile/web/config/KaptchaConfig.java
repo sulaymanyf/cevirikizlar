@@ -35,7 +35,7 @@ public class KaptchaConfig {
         // session key
         properties.setProperty("kaptcha.session.key", "code");
         // 验证码长度
-        properties.setProperty("kaptcha.textproducer.char.length", "6");
+        properties.setProperty("kaptcha.textproducer.char.length", "4");
         // 字体
         properties.setProperty("kaptcha.textproducer.font.names", "Turkish");
 

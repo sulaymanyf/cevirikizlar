@@ -52,7 +52,7 @@ import java.util.zip.InflaterInputStream;
  */
 
 @RestController
-@RequestMapping("/api/ceviri-kizlar/file")
+@RequestMapping(name = "文件管理",value = "/api/ceviri-kizlar/file")
 public class FileController {
 
     @Resource
@@ -67,7 +67,7 @@ public class FileController {
     static boolean save =true;
     static boolean  nestLists = true;
 
-    @PostMapping(value = "v1/fileUpload")
+    @PostMapping(name = "文件上传",value = "v1/file/fileUpload")
     public Result fileUpload(HttpServletRequest request , @RequestParam(value = "file") MultipartFile file) throws IOException {
 
         request.setCharacterEncoding("UTF-8");
@@ -104,7 +104,7 @@ public class FileController {
         return new Result(true, StatusCode.OK, fileId);
     }
 
-    @GetMapping(value = "v1/file/{id}")
+    @GetMapping(name = "获取文件",value = "v1/file/{id}")
     public void getFile(HttpServletResponse response , @PathVariable(value = "id" ,required = false) String id) throws IOException, Docx4JException {
         String path = ResourceUtils.getURL("classpath:").getPath();
         String projectPath = path.substring(0, path.indexOf("web"));
@@ -169,7 +169,7 @@ public class FileController {
         wordprocessingMLPackage = null;
     }
 
-    @GetMapping(value = "v1/read-file/{id}")
+    @GetMapping(name = "只读文件",value = "v1/file/read-file/{id}")
     public void readFile(HttpServletResponse response , @PathVariable(value = "id" ,required = false) String id) throws IOException, Docx4JException {
         String path = ResourceUtils.getURL("classpath:").getPath();
         String projectPath = path.substring(0, path.indexOf("web"));
@@ -179,7 +179,7 @@ public class FileController {
     }
 
 
-    @GetMapping(value = "v1/file-ceviri/{id}")
+    @GetMapping(name = "读译文",value = "v1/file/file-ceviri/{id}")
     public Result readFile( @PathVariable(value = "id" ,required = false) String id) throws IOException {
         String path = ResourceUtils.getURL("classpath:").getPath();
         String projectPath = path.substring(0, path.indexOf("web"));
