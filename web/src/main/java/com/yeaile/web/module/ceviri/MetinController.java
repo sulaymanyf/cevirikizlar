@@ -11,12 +11,14 @@ import com.yeaile.common.domain.ceviri.dto.MetinTypeDTO;
 import com.yeaile.common.domain.ceviri.vo.MetinTypeNodeVO;
 import com.yeaile.common.domain.ceviri.vo.MetinTypeVO;
 import com.yeaile.common.domain.ceviri.vo.MetinVO;
+import com.yeaile.common.domain.tag.vo.TagVo;
 import com.yeaile.common.result.Result;
 import com.yeaile.common.result.StatusCode;
 import com.yeaile.common.utils.StringUtil;
 import com.yeaile.file.entity.MyFile;
 import com.yeaile.file.mapper.FileMapper;
 import com.yeaile.file.service.IFileService;
+import com.yeaile.tag.service.ITagService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.checkerframework.checker.units.qual.A;
@@ -47,6 +49,9 @@ public class MetinController {
 
     @Autowired
     private IMetinTypeService iMetinTypeService;
+
+    @Autowired
+    private ITagService iTagService;
 
 
     @ApiOperation("获取单个译文")
@@ -90,8 +95,8 @@ public class MetinController {
     @ApiOperation("修改或添加文章类型")
     @PutMapping(name = "修改或添加文章类型",value = "v1/metin/type")
     public Result addOrUpdateMetinType(@RequestBody MetinTypeDTO metinTypeDTO){
-        iMetinTypeService.addOrUpdateMetinType(metinTypeDTO);
-        return new Result(true, StatusCode.OK,"basrildi");
+        List<MetinTypeVO> typeVOList= iMetinTypeService.addOrUpdateMetinType(metinTypeDTO);
+        return new Result(true, StatusCode.OK,"basrildi",typeVOList);
     }
 
     @ApiOperation("获取单个文章类型")
@@ -108,6 +113,21 @@ public class MetinController {
         List<MetinTypeNodeVO> metinTypeVO =  iMetinTypeService.MetinTypeTree();
         return new Result(true, StatusCode.OK,metinTypeVO);
     }
+
+    @ApiOperation("文章类型列表")
+    @GetMapping(name = "文章类型列表",value = "v1/metin/tipList")
+    public Result tipList(){
+        List<MetinTypeVO> metinTypeVO =  iMetinTypeService.tipList();
+        return new Result(true, StatusCode.OK,metinTypeVO);
+    }
+
+    @ApiOperation("删除类型")
+    @DeleteMapping(name = "删除类型",value = "v1/metin/type/{id}")
+    public Result deleteTip(@PathVariable String id){
+        List<MetinTypeVO> metinTypeVO =  iMetinTypeService.delete(id);
+        return new Result(true, StatusCode.OK,metinTypeVO);
+    }
+
 
 }
 

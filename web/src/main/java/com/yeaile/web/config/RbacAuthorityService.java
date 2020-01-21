@@ -41,6 +41,7 @@ public class RbacAuthorityService {
             for (GrantedAuthority authority : authorities) {
                 if ("ROLE_admin".equalsIgnoreCase(authority.getAuthority())){
                     hasPermission = true;
+                    request.setAttribute("AdminFlag",true);
                     return hasPermission;
                 }
             }

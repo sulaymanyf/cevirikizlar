@@ -11,6 +11,7 @@ import com.yeaile.common.utils.IdWorkerUtil;
 import com.yeaile.tag.entity.Tag;
 import com.yeaile.tag.service.ITagService;
 import com.yeaile.tag.mapper.TagMapper;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,18 +40,25 @@ public class TagServiceImpl implements ITagService {
     }
 
     @Override
-    public IPage<TagVo> listTag() {
+    public IPage<TagVo> listTag(int current,int size) {
         IPage<Tag> page = new Page<>();
+        page.setSize(size);
+        page.setCurrent(current);
         QueryWrapper<Tag> query = new QueryWrapper<>();
         IPage<Tag> tagIPage = tagMapper.selectPage(page, query);
         return BeanUtil.copyPagInfo(tagIPage,TagVo.class);
     }
 
     @Override
-    public void tag(TagDTO tagDTO) {
+    public IPage<TagVo> tag(TagDTO tagDTO) {
         Tag tag = BeanUtil.copy(tagDTO, Tag.class);
-        tag.setId(IdWorkerUtil.getIdStr());
-        tagMapper.insert(tag);
+       if (tag.getId()==null){
+           tag.setId(IdWorkerUtil.getIdStr());
+           tagMapper.insert(tag);
+       }else {
+           tagMapper.updateById(tag);
+       }
+       return this.listTag(0,10);
     }
 
     @Override
@@ -60,7 +68,14 @@ public class TagServiceImpl implements ITagService {
     }
 
     @Override
-    public void deleteTag(String id) {
+    public IPage<TagVo> deleteTag(String id) {
         tagMapper.deleteById(id);
+        return this.listTag(0,10);
+    }
+
+    @Override
+    public List<TagVo> tagList() {
+
+        return null;
     }
 }

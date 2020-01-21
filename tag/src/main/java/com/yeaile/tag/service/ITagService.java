@@ -4,6 +4,7 @@ package com.yeaile.tag.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.yeaile.common.domain.tag.dto.TagDTO;
 import com.yeaile.common.domain.tag.vo.TagVo;
+import java.util.List;
 
 /**
  * <p>
@@ -15,13 +16,16 @@ import com.yeaile.common.domain.tag.vo.TagVo;
  */
 public interface ITagService {
 
-    TagVo tag(String id);
+  TagVo tag(String id);
 
-    IPage<TagVo> listTag();
+  IPage<TagVo> listTag(int page,int size);
 
-    void tag(TagDTO tagDTO);
+  IPage<TagVo> tag(TagDTO tagDTO);
 
-    void UpdateTag(TagDTO tagDTO);
+  void UpdateTag(TagDTO tagDTO);
 
-    void deleteTag(String id);
+  IPage<TagVo> deleteTag(String id);
+
+  List<TagVo> tagList();
+
 }

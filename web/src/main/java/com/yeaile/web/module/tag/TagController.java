@@ -44,33 +44,28 @@ public class TagController {
 
 
     @ApiOperation("分页获取tag")
-    @GetMapping(name = "分页获取tag",value = "v1/tag/{page}/{size}")
-    public Result listTag(@PathVariable  int page, @PathVariable int size){
-        IPage<TagVo> tagVoIPage =  tagService.listTag();
+    @GetMapping(name = "分页获取tag",value ={ "v1/tag/{size}/{page}"})
+    public Result listTag(@PathVariable(required = false, name ="page" ) Integer page, @PathVariable(required = false, name ="size" ) Integer size){
+        if (page==null) page=0;
+        if (size==null) size=10;
+        IPage<TagVo> tagVoIPage =  tagService.listTag(page,size);
         return new Result(true, StatusCode.OK,tagVoIPage);
     }
 
 
 
-    @ApiOperation("新增")
+    @ApiOperation("新增修改")
     @PostMapping(name = "新增",value = "v1/tag")
     public Result addTag(@RequestBody TagDTO tagDTO){
-        tagService.tag(tagDTO);
-        return new Result(true, StatusCode.OK,"sussess");
-    }
-
-    @ApiOperation("修改")
-    @PutMapping(name = "修改",value = "v1/tag")
-    public Result UpdateTag(@RequestBody TagDTO tagDTO){
-        tagService.UpdateTag(tagDTO);
-        return new Result(true, StatusCode.OK,"sussess");
+        IPage<TagVo> page = tagService.tag(tagDTO);
+        return new Result(true, StatusCode.OK,"sussess",page);
     }
 
 
     @ApiOperation("删除")
     @DeleteMapping(name = "删除",value = "v1/tag/{id}")
     public Result deleteTag(@PathVariable String id){
-        tagService.deleteTag(id);
-        return new Result(true, StatusCode.OK,"sussess");
+        IPage<TagVo> iPage = tagService.deleteTag(id);
+        return new Result(true, StatusCode.OK,"sussess",iPage);
     }
 }

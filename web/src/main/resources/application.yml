@@ -8,7 +8,7 @@ spring:
     driverClassName: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/cevirikizlar?characterEncoding=UTF8&serverTimezone=UTC
     username: root
-    password: Admin1234
+    password: 123456
   redis:
     host: localhost
     port: 6379

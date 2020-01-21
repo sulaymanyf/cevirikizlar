@@ -139,6 +139,12 @@ public class PermissionServiceImpl implements IPermissionService {
         return menuTree;
     }
 
+    @Override
+    public List<PermissionVO> getAll() {
+        List<Permission> permissionList = permissionMapper.selectList(null);
+        return BeanUtil.copyList(permissionList,PermissionVO.class);
+    }
+
 
     private static List<PermissionNodeVO> ListToTree(ArrayList<PermissionNodeVO> list) {
 

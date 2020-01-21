@@ -56,6 +56,12 @@ public class PermissionController {
         return new Result(true, StatusCode.OK,permissionVOs);
     }
 
+    @RequestMapping(name = "所有权限",value = "v1/permission/AllList",method = RequestMethod.GET)
+    public Result getAll(){
+        List<PermissionVO> permissionVOs = permissionService.getAll();
+        return new Result(true, StatusCode.OK,permissionVOs);
+    }
+
 
 }
 

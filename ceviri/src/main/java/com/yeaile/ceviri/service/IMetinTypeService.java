@@ -4,8 +4,7 @@ package com.yeaile.ceviri.service;
 import com.yeaile.common.domain.ceviri.dto.MetinTypeDTO;
 import com.yeaile.common.domain.ceviri.vo.MetinTypeNodeVO;
 import com.yeaile.common.domain.ceviri.vo.MetinTypeVO;
-
-import javax.swing.tree.TreeNode;
+import com.yeaile.common.domain.tag.vo.TagVo;
 import java.util.List;
 
 /**
@@ -18,11 +17,15 @@ import java.util.List;
  */
 public interface IMetinTypeService {
 
-    void addOrUpdateMetinType(MetinTypeDTO metinTypeDTO);
+  List<MetinTypeVO> addOrUpdateMetinType(MetinTypeDTO metinTypeDTO);
 
-    MetinTypeVO MetinType(String id);
+  MetinTypeVO MetinType(String id);
 
-    List<MetinTypeNodeVO> MetinTypeTree();
+  List<MetinTypeNodeVO> MetinTypeTree();
 
 
+  List<MetinTypeVO>  tipList();
+
+
+  List<MetinTypeVO> delete(String id);
 }

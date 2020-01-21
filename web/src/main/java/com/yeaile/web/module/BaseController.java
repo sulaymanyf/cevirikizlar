@@ -19,6 +19,7 @@ public class BaseController {
     protected HttpServletResponse response;
     protected String UserId;
     protected Claims claims;
+    protected boolean AdminFlag=false;
 
     @ModelAttribute
     public void SetResAndReq(HttpServletRequest request, HttpServletResponse response){
@@ -30,5 +31,10 @@ public class BaseController {
             this.claims= (Claims) obj;
             this.UserId= (String) claims.get("userId");
         }
+        Object admin = request.getAttribute("AdminFlag");
+        if (admin!=null){
+            this.AdminFlag = (boolean) request.getAttribute("AdminFlag");
+        }
+
     }
 }

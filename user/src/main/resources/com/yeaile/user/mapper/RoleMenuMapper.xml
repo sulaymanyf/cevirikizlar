@@ -16,7 +16,10 @@
  menu_id
 
     </sql>
-    <select id="selectMenuByRoleId" resultType="com.yeaile.common.domain.user.vo.MenuVO">
+  <delete id="deleteByRoleId">
+    delete from tb_role_menu where role_id=#{id}
+  </delete>
+  <select id="selectMenuByRoleId" resultType="com.yeaile.common.domain.user.vo.MenuVO">
         select tm.id,
                tm.code,
                tm.description,

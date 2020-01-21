@@ -9,6 +9,7 @@ import com.yeaile.common.result.ResultCode;
 import com.yeaile.common.result.StatusCode;
 import com.yeaile.common.utils.HWPFUtil;
 import com.yeaile.file.service.IFileService;
+import com.yeaile.web.module.BaseController;
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.ooxml.POIXMLDocument;
 import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
@@ -53,7 +54,7 @@ import java.util.zip.InflaterInputStream;
 
 @RestController
 @RequestMapping(name = "文件管理",value = "/api/ceviri-kizlar/file")
-public class FileController {
+public class FileController extends BaseController {
 
     @Resource
     private IFileService fileService;
@@ -66,6 +67,10 @@ public class FileController {
 
     static boolean save =true;
     static boolean  nestLists = true;
+
+    static final String PDF="pdf";
+    static final String DOCX="docx";
+    static final String TXT="txt";
 
     @PostMapping(name = "文件上传",value = "v1/file/fileUpload")
     public Result fileUpload(HttpServletRequest request , @RequestParam(value = "file") MultipartFile file) throws IOException {
@@ -80,7 +85,7 @@ public class FileController {
         String suffixName = fileName.substring(fileName.lastIndexOf("."));
         // 上传后的路径
         // 新文件名
-        if (!"pdf".equalsIgnoreCase(suffixName)|| !"docx".equalsIgnoreCase(suffixName)|| !"text".equalsIgnoreCase(suffixName)){
+        if (!PDF.equalsIgnoreCase(suffixName)|| !DOCX.equalsIgnoreCase(suffixName)|| !TXT.equalsIgnoreCase(suffixName)){
             //抛异常
         }
         String path = null;
@@ -189,6 +194,19 @@ public class FileController {
         FileUtils.readLines(new File(projectPath+filePath),"utf-8").forEach(stringBuffer::append);
 
         return new Result(true,ResultCode.SUCCESS.getCode(),stringBuffer.toString());
+
+    }
+
+
+    @GetMapping(name = "我的文件",value = "v1/file/me")
+    public Result MyFiles( ){
+        if (AdminFlag){
+            System.out.println(AdminFlag);
+        }else {
+            System.out.println(AdminFlag);
+        }
+
+        return new Result(true,ResultCode.SUCCESS.getCode(),"s");
 
     }
 }

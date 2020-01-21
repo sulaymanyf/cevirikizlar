@@ -1,12 +1,9 @@
 package com.yeaile.user.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.yeaile.common.domain.user.vo.MenuVO;
-import com.yeaile.user.entity.RoleMenu;
+import com.yeaile.user.entity.RolePermission;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-
-import java.util.List;
 
 /**
  * <p>
@@ -17,9 +14,8 @@ import java.util.List;
  * @since 2020-01-18
  */
 @Mapper
-public interface RoleMenuMapper extends BaseMapper<RoleMenu> {
-
-    List<MenuVO> selectMenuByRoleId(@Param("id") String id);
+public interface RolePermissionMapper extends BaseMapper<RolePermission> {
 
     void deleteByRoleId(@Param("id") String id);
+
 }

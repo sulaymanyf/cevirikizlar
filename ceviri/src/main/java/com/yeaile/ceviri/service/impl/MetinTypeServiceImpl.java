@@ -10,6 +10,7 @@ import com.yeaile.ceviri.service.IMetinTypeService;
 import com.yeaile.common.domain.ceviri.dto.MetinTypeDTO;
 import com.yeaile.common.domain.ceviri.vo.MetinTypeNodeVO;
 import com.yeaile.common.domain.ceviri.vo.MetinTypeVO;
+import com.yeaile.common.domain.tag.vo.TagVo;
 import com.yeaile.common.utils.BeanUtil;
 import com.yeaile.common.utils.IdWorkerUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,11 +42,10 @@ public class MetinTypeServiceImpl implements IMetinTypeService {
     private MetinTypeMapper metinTypeMapper ;
 
     @Override
-    public void addOrUpdateMetinType(MetinTypeDTO metinTypeDTO) {
+    public List<MetinTypeVO> addOrUpdateMetinType(MetinTypeDTO metinTypeDTO) {
         MetinType metinType = BeanUtil.copy(metinTypeDTO, MetinType.class);
         if (metinType.getId() ==null){
             //新增
-            metinType.setPid("0");
             metinType.setId(IdWorkerUtil.getIdStr());
             metinTypeMapper.insert(metinType);
         }else {
@@ -53,6 +53,7 @@ public class MetinTypeServiceImpl implements IMetinTypeService {
             metinType.setId(selectById.getId());
             metinTypeMapper.updateById(metinType);
         }
+        return this.tipList();
     }
 
     @Override
@@ -73,6 +74,18 @@ public class MetinTypeServiceImpl implements IMetinTypeService {
         }
         List<MetinTypeNodeVO> metinTree = ListToTree(metinTypeNodeVOS);
         return metinTree;
+    }
+
+    @Override
+    public  List<MetinTypeVO>  tipList() {
+        List<MetinType> typeList = metinTypeMapper.selectList(null);
+        return BeanUtil.copyList(typeList,MetinTypeVO.class);
+    }
+
+    @Override
+    public List<MetinTypeVO> delete(String id) {
+        metinTypeMapper.deleteById(id);
+        return this.tipList();
     }
 
 

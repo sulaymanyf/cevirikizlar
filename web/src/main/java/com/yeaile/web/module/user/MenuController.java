@@ -37,7 +37,7 @@ public class MenuController {
         return new Result(true, StatusCode.OK,menuNodeVOList);
     }
 
-    @RequestMapping(name = "获取菜单列表",value = "v1/menuList",method = RequestMethod.GET)
+    @RequestMapping(name = "获取菜单列表",value = "v1/menu/List",method = RequestMethod.GET)
     public Result getMenuList(){
         List<MenuVO> menuNodeVOList =  menuService.getMenuList();
         return new Result(true, StatusCode.OK,menuNodeVOList);

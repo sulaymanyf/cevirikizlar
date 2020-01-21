@@ -31,9 +31,9 @@ public class RoleController {
 
 
     @RequestMapping(name = "新增角色",value = "/v1/role" ,method = RequestMethod.POST)
-    public Result add(@RequestBody RoleDTO roleDTO) {
-        roleService.addUser(roleDTO);
-        return new Result(true, StatusCode.OK, "增加成功");
+    public Result addOrUpdate(@RequestBody RoleDTO roleDTO) {
+        List<RoleVO> roleVOList= roleService.addOrUpdate(roleDTO);
+        return new Result(true, StatusCode.OK, "增加成功",roleVOList);
     }
 
     @RequestMapping(name = "角色分页",value = {"/v1/role/{id}","/v1/role"} ,method = RequestMethod.GET)
@@ -41,5 +41,7 @@ public class RoleController {
         List<RoleVO> roleVOList = roleService.getRoleList(id);
         return new Result(true, StatusCode.OK, "增加成功",roleVOList);
     }
+
+
 }
 

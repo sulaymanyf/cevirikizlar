@@ -34,7 +34,7 @@ public class RolePermission {
     private String roleId;
 
     @TableField("Permission_id")
-    private String menuId;
+    private String permissionId;
 
 
     @Tolerate

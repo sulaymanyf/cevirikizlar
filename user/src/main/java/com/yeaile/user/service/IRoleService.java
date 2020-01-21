@@ -16,7 +16,7 @@ import java.util.List;
  */
 public interface IRoleService {
 
-    void addUser(RoleDTO roleDTO);
+    List<RoleVO> addOrUpdate(RoleDTO roleDTO);
 
     List<RoleVO> getRoleList(String roleId);
 
